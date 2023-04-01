@@ -1,0 +1,4 @@
+name: CraftTown
+version: 1.0
+api-version: 1.19
+main: elc.florian.Main
