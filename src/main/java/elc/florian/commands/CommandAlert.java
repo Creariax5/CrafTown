@@ -15,8 +15,7 @@ public class CommandAlert implements CommandExecutor {
         }
 
         String message = String.join(" ", args);
-        message = ChatColor.translateAlternateColorCodes('&', message);
-        Bukkit.broadcastMessage(ChatColor.AQUA + "Dieu:" + message);
+        Bukkit.broadcastMessage(ChatColor.AQUA + "Dieu: " + ChatColor.DARK_RED + message);
 
         return false;
     }

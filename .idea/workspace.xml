@@ -4,11 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="da6e7cba-aeda-4b89-b585-1665e8ec2a54" name="Changes" comment="setup craftTown">
+    <list default="true" id="da6e7cba-aeda-4b89-b585-1665e8ec2a54" name="Changes" comment="création alert command">
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/elc/florian/commands/CommandAlert.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/elc/florian/commands/CommandAutoBridge.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/elc/florian/commands/CommandCity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/elc/florian/other/MyListener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/elc/florian/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/elc/florian/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/elc/florian/commands/CommandAlert.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/elc/florian/commands/CommandAlert.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/plugin.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -68,16 +72,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "D:/devProjects/MC serv/plugins/CraftTown/server"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/devProjects/MC serv/plugins/CraftTown/server&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="elc.florian.commands" />
+      <recent name="elc.florian" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\devProjects\MC serv\plugins\CraftTown\server" />
     </key>
@@ -135,11 +144,19 @@
       <option name="project" value="LOCAL" />
       <updated>1680339990352</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="création alert command">
+      <created>1680341702444</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1680341702444</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="setup craftTown" />
-    <option name="LAST_COMMIT_MESSAGE" value="setup craftTown" />
+    <MESSAGE value="création alert command" />
+    <option name="LAST_COMMIT_MESSAGE" value="création alert command" />
   </component>
 </project>

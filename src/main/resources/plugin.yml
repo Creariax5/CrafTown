@@ -6,4 +6,12 @@ commands:
   alert:
     description: Envoie un alerte dans le chat
     aliases:
-      - alert
+      - alerte
+  city:
+    description: Consulter la liste des villes
+    aliases:
+      - ville
+  bridge:
+    description: Set des blocks en dessous du joueur.
+    aliases:
+      - auto-bridge
