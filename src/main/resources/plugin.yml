@@ -15,3 +15,9 @@ commands:
     description: Set des blocks en dessous du joueur.
     aliases:
       - auto-bridge
+data-base:
+  host: eu02-sql.pebblehost.com
+  user: customer_456749_craftown
+  password: 84@6hvS~tbK$t4JVgMeO
+  name: customer_456749_craftown
+  port: 3306
