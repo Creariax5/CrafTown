@@ -12,7 +12,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 public class CommandCity implements CommandExecutor {
-    private Main main;
+    private final Main main;
 
     public CommandCity(Main main) {
         this.main = main;
@@ -23,7 +23,7 @@ public class CommandCity implements CommandExecutor {
         Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
             if (args.length == 0) {
                 List<String> cityList = new ArrayList<String>();
-                cityList = getCity(cityList);
+                getCity(cityList);
 
                 sender.sendMessage(ChatColor.BLUE + "Voici la liste des villes du pays: " + ChatColor.GOLD + cityList.toString());
                 // return false;
@@ -44,7 +44,7 @@ public class CommandCity implements CommandExecutor {
 
                 } else if (Objects.equals(args[0], "join")) {
                     List<String> cityList = new ArrayList<String>();
-                    cityList = getCity(cityList);
+                    getCity(cityList);
 
                     args[0] = "";
                     String city = String.join("", args);
@@ -74,8 +74,8 @@ public class CommandCity implements CommandExecutor {
                     }
 
                 } else if (Objects.equals(args[0], "info")) {
-                    List cityList = new ArrayList<String>();
-                    cityList = getCity(cityList);
+                    List<String> cityList = new ArrayList<>();
+                    getCity(cityList);
                     String city = args[1];
 
                     final DbConnection db1Connection = main.getDbManager().getDb1Connection();

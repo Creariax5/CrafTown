@@ -4,14 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="da6e7cba-aeda-4b89-b585-1665e8ec2a54" name="Changes" comment="création autobridge command">
-      <change afterPath="$PROJECT_DIR$/src/main/java/elc/florian/db/DbConnection.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/elc/florian/db/DbCred.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/elc/florian/db/DbManager.java" afterDir="false" />
+    <list default="true" id="da6e7cba-aeda-4b89-b585-1665e8ec2a54" name="Changes" comment="city command maj with SQL db">
+      <change afterPath="$PROJECT_DIR$/src/main/java/elc/florian/other/ChatListener.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/elc/florian/other/Info_player.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/elc/florian/other/JoinListener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/elc/florian/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/elc/florian/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/elc/florian/commands/CommandCity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/elc/florian/commands/CommandCity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/plugin.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/elc/florian/other/MyListener.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,6 +64,13 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="LogFilters">
+    <option name="FILTER_ERRORS" value="false" />
+    <option name="FILTER_WARNINGS" value="false" />
+    <option name="FILTER_INFO" value="true" />
+    <option name="FILTER_DEBUG" value="true" />
+    <option name="CUSTOM_FILTER" />
+  </component>
   <component name="ProjectId" id="2NolhLmZR1KqY8xYkw3uQZlaKpg" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -78,7 +85,7 @@
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/devProjects/MC serv/plugins/CraftTown/server&quot;
+    &quot;last_opened_file_path&quot;: &quot;D:/devProjects/MC serv/plugins/CraftTown/server/plugins&quot;
   }
 }</component>
   <component name="RecentsManager">
@@ -87,6 +94,7 @@
       <recent name="elc.florian" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\devProjects\MC serv\plugins\CraftTown\server\plugins" />
       <recent name="D:\devProjects\MC serv\plugins\CraftTown\server" />
     </key>
   </component>
@@ -157,13 +165,21 @@
       <option name="project" value="LOCAL" />
       <updated>1680417955814</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="city command maj with SQL db">
+      <created>1680802971009</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1680802971010</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="setup craftTown" />
     <MESSAGE value="création alert command" />
     <MESSAGE value="création autobridge command" />
-    <option name="LAST_COMMIT_MESSAGE" value="création autobridge command" />
+    <MESSAGE value="city command maj with SQL db" />
+    <option name="LAST_COMMIT_MESSAGE" value="city command maj with SQL db" />
   </component>
 </project>
