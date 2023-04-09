@@ -29,7 +29,7 @@ public class ChatListener implements Listener {
         if (main.getInfo_player().containsKey(uuid)) {
 
             final Info_player info_player = main.getInfo_player().get(uuid);
-            event.setFormat(ChatColor.AQUA + "[" + info_player.getGrade() + "] " + player.getDisplayName() + " -> " + ChatColor.WHITE + event.getMessage());
+            event.setFormat(ChatColor.AQUA + "[" + ChatColor.LIGHT_PURPLE + info_player.getGrade() + ChatColor.AQUA + "] " + player.getDisplayName() + " -> " + ChatColor.WHITE + event.getMessage());
         } else {
             final DbConnection db1Connection = main.getDbManager().getDb1Connection();
 
@@ -42,7 +42,7 @@ public class ChatListener implements Listener {
             }
 
             final Info_player info_player = main.getInfo_player().get(uuid);
-            event.setFormat(ChatColor.AQUA + "[" + ChatColor.GOLD + info_player.getGrade() + ChatColor.AQUA + "] " + player.getDisplayName() + " -> " + ChatColor.WHITE + event.getMessage());
+            event.setFormat(ChatColor.AQUA + "[" + ChatColor.LIGHT_PURPLE + info_player.getGrade() + ChatColor.AQUA + "] " + player.getDisplayName() + " -> " + ChatColor.WHITE + event.getMessage());
             // event.setFormat(ChatColor.RED + event.getMessage());
         }
     }

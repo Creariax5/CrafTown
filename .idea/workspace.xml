@@ -4,14 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="da6e7cba-aeda-4b89-b585-1665e8ec2a54" name="Changes" comment="city command maj with SQL db">
-      <change afterPath="$PROJECT_DIR$/src/main/java/elc/florian/other/ChatListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/elc/florian/other/Info_player.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/elc/florian/other/JoinListener.java" afterDir="false" />
+    <list default="true" id="da6e7cba-aeda-4b89-b585-1665e8ec2a54" name="Changes" comment="chat color and grades">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/elc/florian/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/elc/florian/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/elc/florian/commands/CommandCity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/elc/florian/commands/CommandCity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/elc/florian/other/MyListener.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/elc/florian/other/ChatListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/elc/florian/other/ChatListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/elc/florian/other/Info_player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/elc/florian/other/Info_player.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/elc/florian/other/JoinListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/elc/florian/other/JoinListener.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -172,7 +170,14 @@
       <option name="project" value="LOCAL" />
       <updated>1680802971010</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="chat color and grades">
+      <created>1680984988329</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1680984988329</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -180,6 +185,7 @@
     <MESSAGE value="création alert command" />
     <MESSAGE value="création autobridge command" />
     <MESSAGE value="city command maj with SQL db" />
-    <option name="LAST_COMMIT_MESSAGE" value="city command maj with SQL db" />
+    <MESSAGE value="chat color and grades" />
+    <option name="LAST_COMMIT_MESSAGE" value="chat color and grades" />
   </component>
 </project>

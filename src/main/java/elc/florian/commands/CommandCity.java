@@ -5,11 +5,14 @@ import java.util.*;
 
 import elc.florian.Main;
 import elc.florian.db.DbConnection;
+import elc.florian.other.Info_player;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class CommandCity implements CommandExecutor {
     private final Main main;
@@ -28,7 +31,7 @@ public class CommandCity implements CommandExecutor {
                 sender.sendMessage(ChatColor.BLUE + "Voici la liste des villes du pays: " + ChatColor.GOLD + cityList.toString());
                 // return false;
             } else {
-                if (Objects.equals(args[0], "add")) {
+                if (Objects.equals(args[0], "add") || Objects.equals(args[0], "create")) {
                     args[0] = "";
                     String name = String.join("", args);
                     System.out.println(name);
@@ -36,10 +39,10 @@ public class CommandCity implements CommandExecutor {
                     final DbConnection db1Connection = main.getDbManager().getDb1Connection();
                     try {
                         final Connection connection = db1Connection.getConnection();
-                        createCity(connection, name);
-                        sender.sendMessage(ChatColor.GREEN + name + " a été ajouté à la liste des villes !");
+                        createCity(connection, name, sender);
                     } catch (SQLException e) {
                         e.printStackTrace();
+                        sender.sendMessage(ChatColor.RED + "ERREUR durant la creation de la ville");
                     }
 
                 } else if (Objects.equals(args[0], "join")) {
@@ -56,11 +59,11 @@ public class CommandCity implements CommandExecutor {
                         try {
                             final Connection connection = db1Connection.getConnection();
                             String user_name = sender.getName();
-                            joinCity(connection, city, user_name);
+                            joinCity(connection, city, sender);
                             sender.sendMessage(ChatColor.GREEN + "Vous avez été accepté dans " + city + " vous avez donc rejoint la ville !");
                         } catch (SQLException e) {
                             e.printStackTrace();
-                            Bukkit.broadcastMessage(ChatColor.RED + "Vous ne pouvez pas rejoidre la ville " + args[0] + " pour le moment");
+                            sender.sendMessage(ChatColor.RED + "Vous ne pouvez pas rejoidre la ville " + args[0] + " pour le moment");
                         }
 
                         /*sender.sendMessage("");
@@ -70,7 +73,19 @@ public class CommandCity implements CommandExecutor {
                                 "Nous sommes très content de t'accueillir a " + city + " !\n" +
                                 "N'hésite pas à solliciter le maire si tu as besoin de quoi que ce soit.\n "); */
                     } else {
-                        Bukkit.broadcastMessage(ChatColor.RED + "La ville " + args[0] + " n'existe pas");
+                        sender.sendMessage(ChatColor.RED + "La ville " + args[0] + " n'existe pas");
+                    }
+
+                } else if (Objects.equals(args[0], "leave")) {
+                    String city = args[1];
+                    final DbConnection db1Connection = main.getDbManager().getDb1Connection();
+                    try {
+                        final Connection connection = db1Connection.getConnection();
+                        leaveCity(connection, city, sender);
+                        sender.sendMessage(ChatColor.GREEN + "Vous avez quitté " + city);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                        sender.sendMessage(ChatColor.RED + "ERREUR");
                     }
 
                 } else if (Objects.equals(args[0], "info")) {
@@ -98,74 +113,163 @@ public class CommandCity implements CommandExecutor {
                         }
 
                         if (cityList.contains(city)) {
-                            Bukkit.broadcastMessage(ChatColor.BLUE + "Info de " + city + ":");
-                            Bukkit.broadcastMessage(ChatColor.GOLD + "----------------------");
-                            Bukkit.broadcastMessage(ChatColor.GOLD + "nombre d'habitants: " + habs_nb);
-                            Bukkit.broadcastMessage(ChatColor.GOLD + "Habitants: " + habs_name);
-                            Bukkit.broadcastMessage(ChatColor.GOLD + "Niveau: " + lv);
-                            Bukkit.broadcastMessage(ChatColor.GOLD + "Maire: " + "NULL");
-                            Bukkit.broadcastMessage(ChatColor.GOLD + "----------------------");
+                            sender.sendMessage(ChatColor.BLUE + "Info de " + city + ":");
+                            sender.sendMessage(ChatColor.GOLD + "----------------------");
+                            sender.sendMessage(ChatColor.GOLD + "nombre d'habitants: " + habs_nb);
+                            sender.sendMessage(ChatColor.GOLD + "Habitants: " + habs_name);
+                            sender.sendMessage(ChatColor.GOLD + "Niveau: " + lv);
+                            sender.sendMessage(ChatColor.GOLD + "Maire: " + "NULL");
+                            sender.sendMessage(ChatColor.GOLD + "----------------------");
                         } else {
-                            Bukkit.broadcastMessage(ChatColor.RED + "No city named " + city);
+                            sender.sendMessage(ChatColor.RED + "No city named " + city);
                         }
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
 
                 } else {
-                    Bukkit.broadcastMessage(ChatColor.RED + "No arguments matches with " + args[0]);
+                    sender.sendMessage(ChatColor.RED + "No arguments matches with " + args[0]);
                 }
             }
         });
         return false;
     }
 
-    private void createCity(Connection connection, String name) {
-        try {
-            final PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO city VALUES (?, ?, ?, ?, ?, ?, ?)");
-            final Long time = System.currentTimeMillis();
+    private void leaveCity(Connection connection, String city, CommandSender sender) {
+        String rural = "rural";
+        if (Info_player.playerJoinCity(connection, rural, sender)) {
+            try {
+                final PreparedStatement preparedStatement1 = connection.prepareStatement("SELECT habs_nb, habs FROM city WHERE name = ?");
 
-            preparedStatement.setInt(1, 0);
-            preparedStatement.setString(2, name);
-            preparedStatement.setInt(3, 0);
-            preparedStatement.setInt(4, 0);
-            preparedStatement.setString(5, "Les habitants");
-            preparedStatement.setTimestamp(6, new Timestamp(time));
-            preparedStatement.setTimestamp(7, new Timestamp(time));
+                preparedStatement1.setString(1, city);
 
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
+                final ResultSet resultSet = preparedStatement1.executeQuery();
+                int habs_nb;
+                String habs_name;
+                if (resultSet.next()) {
+                    habs_nb = resultSet.getInt(1);
+                    habs_name = resultSet.getString(2);
+
+                    final PreparedStatement preparedStatement2 = connection.prepareStatement("UPDATE city SET habs_nb = ?, habs = ?, updated_at = ? WHERE name = ?");
+                    final long time = System.currentTimeMillis();
+
+                    preparedStatement2.setInt(1, habs_nb - 1);
+                    preparedStatement2.setString(2, habs_name.replaceAll(sender.getName() + " ", ""));
+                    preparedStatement2.setTimestamp(3, new Timestamp(time));
+                    preparedStatement2.setString(4, city);
+
+                    preparedStatement2.executeUpdate();
+                } else {
+                    sender.sendMessage(ChatColor.RED + "ERROR ");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
-    private void joinCity(Connection connection, String name, String user_name) {
-        try {
-            final PreparedStatement preparedStatement1 = connection.prepareStatement("SELECT habs_nb, habs FROM city WHERE name = ?");
+    private void createCity(Connection connection, String name, CommandSender sender) {
+        if (Info_player.playerJoinCity(connection, name, sender)) {
+            try {
+                final PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO city VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                final Player player = (Player) sender;
+                final Location location = player.getLocation();
+                final Long time = System.currentTimeMillis();
 
-            preparedStatement1.setString(1, name);
+                // namePrimary
+                preparedStatement.setString(1, name);
 
-            final ResultSet resultSet = preparedStatement1.executeQuery();
-            int habs_nb = 0;
-            String habs_name = null;
-            if (resultSet.next()) {
-                habs_nb = resultSet.getInt(1);
-                habs_name = resultSet.getString(2);
+                // lv
+                preparedStatement.setInt(2, 0);
 
-                final PreparedStatement preparedStatement2 = connection.prepareStatement("UPDATE city SET habs_nb = ?, habs = ?, updated_at = ? WHERE name = ?");
-                final long time = System.currentTimeMillis();
+                // habs_nb
+                preparedStatement.setInt(3, 1);
 
-                preparedStatement2.setInt(1, habs_nb + 1);
-                preparedStatement2.setString(2, habs_name + " " + user_name);
-                preparedStatement2.setTimestamp(3, new Timestamp(time));
-                preparedStatement2.setString(4, name);
+                // habs
+                preparedStatement.setString(4, sender.getName());
 
-                preparedStatement2.executeUpdate();
-            } else {
-                Bukkit.broadcastMessage(ChatColor.RED + "ERROR ");
+                // maire
+                preparedStatement.setString(5, sender.getName());
+
+                // spawn_world
+                preparedStatement.setString(6, location.getWorld().getName());
+
+                // spawn_x
+                preparedStatement.setDouble(7, location.getX());
+
+                // spawn_y
+                preparedStatement.setDouble(8, location.getY());
+
+                // spawn_z
+                preparedStatement.setDouble(9, location.getZ());
+
+                // spawn_yaw
+                preparedStatement.setFloat(10, location.getYaw());
+
+                // spawn_pitch
+                preparedStatement.setFloat(11, location.getPitch());
+
+                // territory_size
+                preparedStatement.setFloat(12, 100);
+
+                // territory_pos1x
+                preparedStatement.setInt(13, (int) (location.getX() + 50));
+
+                // territory_pos1y
+                preparedStatement.setInt(14, (int) (location.getY() + 50));
+
+                // territory_pos2x
+                preparedStatement.setInt(15, (int) (location.getX() - 50));
+
+                // territory_pos2y
+                preparedStatement.setInt(16, (int) (location.getY() - 50));
+
+                // created_at
+                preparedStatement.setTimestamp(17, new Timestamp(time));
+
+                // updated_at
+                preparedStatement.setTimestamp(18, new Timestamp(time));
+
+
+                preparedStatement.executeUpdate();
+
+                sender.sendMessage(ChatColor.GREEN + name + " a été ajouté à la liste des villes !");
+            } catch (SQLException e) {
+                e.printStackTrace();
+                sender.sendMessage(ChatColor.RED + "ERREUR durant la creation de la ville");
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        }
+    }
+
+    private void joinCity(Connection connection, String name, CommandSender sender) {
+        if (Info_player.playerJoinCity(connection, name, sender)) {
+            try {
+                final PreparedStatement preparedStatement1 = connection.prepareStatement("SELECT habs_nb, habs FROM city WHERE name = ?");
+
+                preparedStatement1.setString(1, name);
+
+                final ResultSet resultSet = preparedStatement1.executeQuery();
+                int habs_nb;
+                String habs_name;
+                if (resultSet.next()) {
+                    habs_nb = resultSet.getInt(1);
+                    habs_name = resultSet.getString(2);
+
+                    final PreparedStatement preparedStatement2 = connection.prepareStatement("UPDATE city SET habs_nb = ?, habs = ?, updated_at = ? WHERE name = ?");
+                    final long time = System.currentTimeMillis();
+
+                    preparedStatement2.setInt(1, habs_nb + 1);
+                    preparedStatement2.setString(2, habs_name + " " + sender.getName());
+                    preparedStatement2.setTimestamp(3, new Timestamp(time));
+                    preparedStatement2.setString(4, name);
+
+                    preparedStatement2.executeUpdate();
+                } else {
+                    sender.sendMessage(ChatColor.RED + "ERROR ");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
