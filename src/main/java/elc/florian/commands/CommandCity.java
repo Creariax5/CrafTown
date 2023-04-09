@@ -31,136 +31,123 @@ public class CommandCity implements CommandExecutor {
                 sender.sendMessage(ChatColor.BLUE + "Voici la liste des villes du pays: " + ChatColor.GOLD + cityList.toString());
                 // return false;
             } else {
-                if (Objects.equals(args[0], "add") || Objects.equals(args[0], "create")) {
-                    args[0] = "";
-                    String name = String.join("", args);
-                    System.out.println(name);
+                final DbConnection db1Connection = main.getDbManager().getDb1Connection();
+                try {
+                    final Connection connection = db1Connection.getConnection();
 
-                    final DbConnection db1Connection = main.getDbManager().getDb1Connection();
-                    try {
-                        final Connection connection = db1Connection.getConnection();
-                        createCity(connection, name, sender);
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                        sender.sendMessage(ChatColor.RED + "ERREUR durant la creation de la ville");
-                    }
+                    if (Objects.equals(args[0], "add") || Objects.equals(args[0], "create")) {
 
-                } else if (Objects.equals(args[0], "join")) {
-                    List<String> cityList = new ArrayList<String>();
-                    getCity(cityList);
+                        // create city
+                        createCity(connection, args[1], sender);
 
-                    args[0] = "";
-                    String city = String.join("", args);
-                    if (cityList.contains(city)) {
-                        // sender.sendMessage(ChatColor.GREEN + "Votre demande pour rejoindre " + city + " a été a été envoyée.");
-                        // sender.sendMessage("");
+                    } else if (Objects.equals(args[0], "join")) {
 
-                        final DbConnection db1Connection = main.getDbManager().getDb1Connection();
-                        try {
-                            final Connection connection = db1Connection.getConnection();
-                            String user_name = sender.getName();
-                            joinCity(connection, city, sender);
-                            sender.sendMessage(ChatColor.GREEN + "Vous avez été accepté dans " + city + " vous avez donc rejoint la ville !");
-                        } catch (SQLException e) {
-                            e.printStackTrace();
-                            sender.sendMessage(ChatColor.RED + "Vous ne pouvez pas rejoidre la ville " + args[0] + " pour le moment");
-                        }
+                        // join city
+                        joinCity(connection, args[1], sender);
 
-                        /*sender.sendMessage("");
-                        sender.sendMessage("" + ChatColor.DARK_GREEN + ChatColor.UNDERLINE + "Message de bienvenue de " + city + ":");
-                        sender.sendMessage("");
-                        sender.sendMessage(ChatColor.DARK_GREEN + "Nous te souhaitons la bienvenue parmi nous.\n" +
-                                "Nous sommes très content de t'accueillir a " + city + " !\n" +
-                                "N'hésite pas à solliciter le maire si tu as besoin de quoi que ce soit.\n "); */
+                    } else if (Objects.equals(args[0], "leave")) {
+
+                        // leave city
+                        leaveCity(connection, sender);
+
+                    } else if (Objects.equals(args[0], "info")) {
+
+                        // get city info
+                        infoCity(connection, args[1], sender);
+
                     } else {
-                        sender.sendMessage(ChatColor.RED + "La ville " + args[0] + " n'existe pas");
+                        sender.sendMessage(ChatColor.RED + "No arguments matches with " + args[0]);
                     }
 
-                } else if (Objects.equals(args[0], "leave")) {
-                    String city = args[1];
-                    final DbConnection db1Connection = main.getDbManager().getDb1Connection();
-                    try {
-                        final Connection connection = db1Connection.getConnection();
-                        leaveCity(connection, city, sender);
-                        sender.sendMessage(ChatColor.GREEN + "Vous avez quitté " + city);
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                        sender.sendMessage(ChatColor.RED + "ERREUR");
-                    }
 
-                } else if (Objects.equals(args[0], "info")) {
-                    List<String> cityList = new ArrayList<>();
-                    getCity(cityList);
-                    String city = args[1];
-
-                    final DbConnection db1Connection = main.getDbManager().getDb1Connection();
-                    final Connection connection;
-                    try {
-                        connection = db1Connection.getConnection();
-
-                        final PreparedStatement preparedStatement1 = connection.prepareStatement("SELECT habs_nb, habs, lv FROM city WHERE name = ?");
-
-                        preparedStatement1.setString(1, city);
-
-                        final ResultSet resultSet = preparedStatement1.executeQuery();
-                        int habs_nb = 0;
-                        String habs_name = null;
-                        int lv = 0;
-                        if (resultSet.next()) {
-                            habs_nb = resultSet.getInt(1);
-                            habs_name = resultSet.getString(2);
-                            lv = resultSet.getInt(3);
-                        }
-
-                        if (cityList.contains(city)) {
-                            sender.sendMessage(ChatColor.BLUE + "Info de " + city + ":");
-                            sender.sendMessage(ChatColor.GOLD + "----------------------");
-                            sender.sendMessage(ChatColor.GOLD + "nombre d'habitants: " + habs_nb);
-                            sender.sendMessage(ChatColor.GOLD + "Habitants: " + habs_name);
-                            sender.sendMessage(ChatColor.GOLD + "Niveau: " + lv);
-                            sender.sendMessage(ChatColor.GOLD + "Maire: " + "NULL");
-                            sender.sendMessage(ChatColor.GOLD + "----------------------");
-                        } else {
-                            sender.sendMessage(ChatColor.RED + "No city named " + city);
-                        }
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-
-                } else {
-                    sender.sendMessage(ChatColor.RED + "No arguments matches with " + args[0]);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    sender.sendMessage(ChatColor.RED + "Database connection failed");
                 }
             }
         });
         return false;
     }
 
-    private void leaveCity(Connection connection, String city, CommandSender sender) {
-        String rural = "rural";
-        if (Info_player.playerJoinCity(connection, rural, sender)) {
+
+
+    private void infoCity(Connection connection, String city, CommandSender sender) {
+        final PreparedStatement preparedStatement1;
+        try {
+            preparedStatement1 = connection.prepareStatement("SELECT habs_nb, maire, habs, lv FROM city WHERE name = ?");
+
+            preparedStatement1.setString(1, city);
+
+            final ResultSet resultSet = preparedStatement1.executeQuery();
+            int habs_nb = 0;
+            String habs_name = null;
+            String maire = null;
+            int lv = 0;
+            if (resultSet.next()) {
+                habs_nb = resultSet.getInt(1);
+                habs_name = resultSet.getString(2);
+                maire = resultSet.getString(3);
+                lv = resultSet.getInt(4);
+            }
+
+            if (isInCity(city)) {
+                sender.sendMessage(ChatColor.BLUE + "Info de " + city + ":");
+                sender.sendMessage(ChatColor.GOLD + "----------------------");
+                sender.sendMessage(ChatColor.GOLD + "nombre d'habitants: " + habs_nb);
+                sender.sendMessage(ChatColor.GOLD + "Habitants: " + habs_name);
+                sender.sendMessage(ChatColor.GOLD + "Niveau: " + lv);
+                sender.sendMessage(ChatColor.GOLD + "Maire: " + maire);
+                sender.sendMessage(ChatColor.GOLD + "----------------------");
+            } else {
+                sender.sendMessage(ChatColor.RED + "No city named " + city);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void leaveCity(Connection connection, CommandSender sender) {
+        String city = Info_player.playerLeaveCity(connection, sender);
+        if (city != null){
             try {
-                final PreparedStatement preparedStatement1 = connection.prepareStatement("SELECT habs_nb, habs FROM city WHERE name = ?");
+                final PreparedStatement preparedStatement1 = connection.prepareStatement("SELECT habs_nb, habs, maire FROM city WHERE name = ?");
 
                 preparedStatement1.setString(1, city);
 
                 final ResultSet resultSet = preparedStatement1.executeQuery();
                 int habs_nb;
                 String habs_name;
+                String maire;
                 if (resultSet.next()) {
                     habs_nb = resultSet.getInt(1);
                     habs_name = resultSet.getString(2);
+                    maire = resultSet.getString(3);
 
-                    final PreparedStatement preparedStatement2 = connection.prepareStatement("UPDATE city SET habs_nb = ?, habs = ?, updated_at = ? WHERE name = ?");
+                    if (habs_name.contains(sender.getName() + " ")) {
+                        habs_name = habs_name.replaceAll(sender.getName() + " ", "");
+                    } else {
+                        habs_name = habs_name.replaceAll(sender.getName(), "");
+                    }
+
+                    if (maire.contains(sender.getName())) {
+                        maire = "";
+                    }
+
+                    final PreparedStatement preparedStatement2 = connection.prepareStatement("UPDATE city SET habs_nb = ?, habs = ?, maire = ?, updated_at = ? WHERE name = ?");
                     final long time = System.currentTimeMillis();
 
                     preparedStatement2.setInt(1, habs_nb - 1);
-                    preparedStatement2.setString(2, habs_name.replaceAll(sender.getName() + " ", ""));
-                    preparedStatement2.setTimestamp(3, new Timestamp(time));
-                    preparedStatement2.setString(4, city);
+                    preparedStatement2.setString(2, habs_name);
+                    preparedStatement2.setString(3, maire);
+                    preparedStatement2.setTimestamp(4, new Timestamp(time));
+
+                    preparedStatement2.setString(5, city);
 
                     preparedStatement2.executeUpdate();
+                    sender.sendMessage(ChatColor.GREEN + "Vous avez quitté " + city);
                 } else {
-                    sender.sendMessage(ChatColor.RED + "ERROR ");
+                    sender.sendMessage(ChatColor.RED + "db ERROR ");
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -241,36 +228,50 @@ public class CommandCity implements CommandExecutor {
         }
     }
 
-    private void joinCity(Connection connection, String name, CommandSender sender) {
-        if (Info_player.playerJoinCity(connection, name, sender)) {
-            try {
-                final PreparedStatement preparedStatement1 = connection.prepareStatement("SELECT habs_nb, habs FROM city WHERE name = ?");
+    private void joinCity(Connection connection, String cityName, CommandSender sender) {
+        if (isInCity(cityName)) {
+            if (Info_player.playerJoinCity(connection, cityName, sender)) {
+                try {
+                    final PreparedStatement preparedStatement1 = connection.prepareStatement("SELECT habs_nb, habs FROM city WHERE name = ?");
 
-                preparedStatement1.setString(1, name);
+                    preparedStatement1.setString(1, cityName);
 
-                final ResultSet resultSet = preparedStatement1.executeQuery();
-                int habs_nb;
-                String habs_name;
-                if (resultSet.next()) {
-                    habs_nb = resultSet.getInt(1);
-                    habs_name = resultSet.getString(2);
+                    final ResultSet resultSet = preparedStatement1.executeQuery();
+                    int habs_nb;
+                    String habs_name;
+                    if (resultSet.next()) {
+                        habs_nb = resultSet.getInt(1);
+                        habs_name = resultSet.getString(2);
 
-                    final PreparedStatement preparedStatement2 = connection.prepareStatement("UPDATE city SET habs_nb = ?, habs = ?, updated_at = ? WHERE name = ?");
-                    final long time = System.currentTimeMillis();
+                        final PreparedStatement preparedStatement2 = connection.prepareStatement("UPDATE city SET habs_nb = ?, habs = ?, updated_at = ? WHERE name = ?");
+                        final long time = System.currentTimeMillis();
 
-                    preparedStatement2.setInt(1, habs_nb + 1);
-                    preparedStatement2.setString(2, habs_name + " " + sender.getName());
-                    preparedStatement2.setTimestamp(3, new Timestamp(time));
-                    preparedStatement2.setString(4, name);
+                        preparedStatement2.setInt(1, habs_nb + 1);
+                        preparedStatement2.setString(2, habs_name + " " + sender.getName());
+                        preparedStatement2.setTimestamp(3, new Timestamp(time));
+                        preparedStatement2.setString(4, cityName);
 
-                    preparedStatement2.executeUpdate();
-                } else {
-                    sender.sendMessage(ChatColor.RED + "ERROR ");
+                        preparedStatement2.executeUpdate();
+                    } else {
+                        sender.sendMessage(ChatColor.RED + "ERROR ");
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
                 }
-            } catch (SQLException e) {
-                e.printStackTrace();
             }
+
+            sender.sendMessage(ChatColor.GREEN + "Vous avez rejoint " + cityName + " !");
+
+        } else {
+            sender.sendMessage(ChatColor.RED + "La ville " + cityName + " n'existe pas");
         }
+    }
+
+    private boolean isInCity(String city){
+        List<String> cityList = new ArrayList<String>();
+        getCity(cityList);
+
+        return cityList.contains(city);
     }
 
     private List<String> getCity(List<String> cityList) {
