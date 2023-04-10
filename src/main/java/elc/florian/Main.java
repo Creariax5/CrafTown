@@ -3,6 +3,7 @@ package elc.florian;
 import elc.florian.commands.*;
 import elc.florian.db.DbManager;
 import elc.florian.listener.ChatListener;
+import elc.florian.listener.InvListener;
 import elc.florian.other.InfoPlayer;
 import elc.florian.listener.JoinListener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -27,10 +28,11 @@ public class Main extends JavaPlugin {
         getCommand("city").setExecutor(new CommandCity(INSTANCE));
         getCommand("money").setExecutor(new CommandMoney(INSTANCE));
         getCommand("spawn").setExecutor(new CommandSpawn(INSTANCE));
-        getCommand("menu").setExecutor(new CommandMoney(INSTANCE));
+        getCommand("menu").setExecutor(new CommandMenu());
         getCommand("bridge").setExecutor(new CommandAutoBridge());
         this.getServer().getPluginManager().registerEvents(new JoinListener(this), this);
         this.getServer().getPluginManager().registerEvents(new ChatListener(this), this);
+        this.getServer().getPluginManager().registerEvents(new InvListener(), this);
     }
 
     @Override

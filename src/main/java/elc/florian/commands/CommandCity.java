@@ -1,8 +1,5 @@
 package elc.florian.commands;
 
-import java.sql.*;
-import java.util.*;
-
 import elc.florian.Main;
 import elc.florian.db.DbConnection;
 import elc.florian.other.InfoPlayer;
@@ -15,6 +12,11 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.checkerframework.checker.nullness.qual.NonNull;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class CommandCity implements CommandExecutor {
     static Main main;
@@ -275,7 +277,7 @@ public class CommandCity implements CommandExecutor {
         return cityList.contains(city);
     }
 
-    private static List<String> getCity(List<String> cityList) {
+    public static List<String> getCity(List<String> cityList) {
         final DbConnection db1Connection = main.getDbManager().getDb1Connection();
         try {
             final Connection connection = db1Connection.getConnection();
