@@ -11,6 +11,18 @@ commands:
     description: Consulter la liste des villes
     aliases:
       - ville
+  money:
+    description: Voir son argent.
+    aliases:
+      - argent
+  spawn:
+    description: Teleporte au spawn defini.
+    aliases:
+      - tp
+  menu:
+    description: Ouvre une interface GUI.
+    aliases:
+      - gui
   bridge:
     description: Set des blocks en dessous du joueur.
     aliases:

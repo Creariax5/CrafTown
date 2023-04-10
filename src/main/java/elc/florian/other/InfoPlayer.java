@@ -1,29 +1,31 @@
 package elc.florian.other;
 
-import elc.florian.commands.CommandCity;
-import org.bukkit.Bukkit;
+import elc.florian.Main;
+import elc.florian.db.DbConnection;
+import elc.florian.listener.JoinListener;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import java.sql.*;
 import java.util.Objects;
 import java.util.UUID;
 
-public class Info_player {
+public class InfoPlayer {
     private UUID uuid;
     private String grade;
     private String ville;
     private int lv;
     private String travail;
+    private int money;
 
 
-    public Info_player(UUID uuid, String grade, String ville, int lv, String travail) {
+    public InfoPlayer(UUID uuid, String grade, String ville, int lv, String travail, int money) {
         this.uuid = uuid;
         this.grade = grade;
         this.ville = ville;
         this.lv = lv;
         this.travail = travail;
+        this.money = money;
     }
 
     public UUID getUuid() {
@@ -45,6 +47,11 @@ public class Info_player {
     public String getTravail() {
         return travail;
     }
+
+    public int getMoney() {
+        return money;
+    }
+
 
     public static boolean playerJoinCity(Connection connection, String villeName, CommandSender sender) {
         try {

@@ -4,11 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="da6e7cba-aeda-4b89-b585-1665e8ec2a54" name="Changes" comment="leave/ create city InfoPlayer joinCity">
-      <change afterPath="$PROJECT_DIR$/src/main/java/elc/florian/other/tmp.java" afterDir="false" />
+    <list default="true" id="da6e7cba-aeda-4b89-b585-1665e8ec2a54" name="Changes" comment="city command clean up">
+      <change afterPath="$PROJECT_DIR$/.idea/dictionaries/flori.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/elc/florian/commands/CommandMenu.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/elc/florian/commands/CommandMoney.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/elc/florian/commands/CommandSpawn.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/elc/florian/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/elc/florian/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/elc/florian/commands/CommandCity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/elc/florian/commands/CommandCity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/elc/florian/other/Info_player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/elc/florian/other/Info_player.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/elc/florian/other/ChatListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/elc/florian/listener/ChatListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/elc/florian/other/Info_player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/elc/florian/other/InfoPlayer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/elc/florian/other/JoinListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/elc/florian/listener/JoinListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/elc/florian/other/tmp.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/plugin.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,6 +77,9 @@
     <option name="FILTER_DEBUG" value="true" />
     <option name="CUSTOM_FILTER" />
   </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectId" id="2NolhLmZR1KqY8xYkw3uQZlaKpg" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -82,7 +94,8 @@
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/devProjects/MC serv/plugins/CraftTown/server/plugins&quot;
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/flori/Downloads/New folder (13)/fr.dic&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.ide.settings.spelling&quot;
   }
 }</component>
   <component name="RecentsManager">
@@ -183,7 +196,14 @@
       <option name="project" value="LOCAL" />
       <updated>1681026255073</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="city command clean up">
+      <created>1681045772720</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1681045772720</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -193,6 +213,11 @@
     <MESSAGE value="city command maj with SQL db" />
     <MESSAGE value="chat color and grades" />
     <MESSAGE value="leave/ create city InfoPlayer joinCity" />
-    <option name="LAST_COMMIT_MESSAGE" value="leave/ create city InfoPlayer joinCity" />
+    <MESSAGE value="city command clean up" />
+    <option name="LAST_COMMIT_MESSAGE" value="city command clean up" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

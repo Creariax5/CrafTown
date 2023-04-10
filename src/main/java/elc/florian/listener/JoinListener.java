@@ -1,7 +1,8 @@
-package elc.florian.other;
+package elc.florian.listener;
 
 import elc.florian.Main;
 import elc.florian.db.DbConnection;
+import elc.florian.other.InfoPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -31,7 +32,7 @@ public class JoinListener implements WebSocket.Listener, Listener {
         final DbConnection db1Connection = main.getDbManager().getDb1Connection();
         try {
             final Connection connection = db1Connection.getConnection();
-            Info_player info_player = getPlayer(connection, uuid);
+            InfoPlayer info_player = getPlayer(connection, uuid);
             if (info_player == null) {
                 createPlayer(connection, uuid, name);
                 info_player = getPlayer(connection, uuid);
@@ -47,7 +48,7 @@ public class JoinListener implements WebSocket.Listener, Listener {
 
     private void createPlayer(Connection connection, UUID uuid, String name) {
         try {
-            final PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO player VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+            final PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO player VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
             final Long time = System.currentTimeMillis();
 
             preparedStatement.setString(1, uuid.toString());
@@ -56,8 +57,9 @@ public class JoinListener implements WebSocket.Listener, Listener {
             preparedStatement.setString(4, "rural");
             preparedStatement.setInt(5, 0);
             preparedStatement.setString(6, "chômeur");
-            preparedStatement.setTimestamp(7, new Timestamp(time));
+            preparedStatement.setInt(7, 600);
             preparedStatement.setTimestamp(8, new Timestamp(time));
+            preparedStatement.setTimestamp(9, new Timestamp(time));
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -65,17 +67,18 @@ public class JoinListener implements WebSocket.Listener, Listener {
         }
     }
 
-    private Info_player getPlayer(Connection connection, UUID uuid) {
+    public static InfoPlayer getPlayer(Connection connection, UUID uuid) {
 
         String grade;
         String ville;
         int lv;
         String travail;
+        int money;
 
 
-        Info_player info_player = null;
+        InfoPlayer info_player = null;
         try {
-            final PreparedStatement preparedStatement = connection.prepareStatement("SELECT grade, ville, lv, travail FROM player WHERE uuid = ?");
+            final PreparedStatement preparedStatement = connection.prepareStatement("SELECT grade, ville, lv, travail, money FROM player WHERE uuid = ?");
 
             preparedStatement.setString(1, uuid.toString());
             final ResultSet resultSet = preparedStatement.executeQuery();
@@ -85,8 +88,9 @@ public class JoinListener implements WebSocket.Listener, Listener {
                 ville = (resultSet.getString(2));
                 lv = (resultSet.getInt(3));
                 travail = (resultSet.getString(4));
+                money = (resultSet.getInt(5));
 
-                info_player = new Info_player(uuid, grade, ville, lv, travail);
+                info_player = new InfoPlayer(uuid, grade, ville, lv, travail, money);
             }
 
         } catch (SQLException e) {
