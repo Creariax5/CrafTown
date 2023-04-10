@@ -4,6 +4,7 @@ import elc.florian.commands.*;
 import elc.florian.db.DbManager;
 import elc.florian.listener.ChatListener;
 import elc.florian.listener.InvListener;
+import elc.florian.other.InfoCity;
 import elc.florian.other.InfoPlayer;
 import elc.florian.listener.JoinListener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -15,19 +16,21 @@ import java.util.UUID;
 public class Main extends JavaPlugin {
     public static Main INSTANCE;
     private DbManager dbManager;
-    private HashMap<UUID, InfoPlayer> info_player;
+    private HashMap<UUID, InfoPlayer> infoPlayer;
+    private HashMap<String, InfoCity> infoCity;
 
     @Override
     public void onEnable() {
         INSTANCE = this;
         dbManager = new DbManager();
-        info_player = new HashMap<>();
+        infoPlayer = new HashMap<>();
+        infoCity = new HashMap<>();
         System.out.println("CraftTown started !");
 
         getCommand("alert").setExecutor(new CommandAlert());
         getCommand("city").setExecutor(new CommandCity(INSTANCE));
         getCommand("money").setExecutor(new CommandMoney(INSTANCE));
-        getCommand("spawn").setExecutor(new CommandSpawn(INSTANCE));
+        getCommand("spawn").setExecutor(new CommandSpawn());
         getCommand("menu").setExecutor(new CommandMenu());
         getCommand("bridge").setExecutor(new CommandAutoBridge());
         this.getServer().getPluginManager().registerEvents(new JoinListener(this), this);
@@ -45,7 +48,10 @@ public class Main extends JavaPlugin {
         return dbManager;
     }
 
-    public HashMap<UUID, InfoPlayer> getInfo_player() {
-        return info_player;
+    public HashMap<UUID, InfoPlayer> getInfoPlayer() {
+        return infoPlayer;
+    }
+    public HashMap<String, InfoCity> getInfoCity() {
+        return infoCity;
     }
 }

@@ -39,7 +39,7 @@ public class JoinListener implements WebSocket.Listener, Listener {
             }
 
             Bukkit.broadcastMessage(ChatColor.AQUA + "[" + ChatColor.LIGHT_PURPLE + info_player.getGrade() + ChatColor.AQUA + "] " + player.getName() + ChatColor.GOLD + " s'est réveillé");
-            main.getInfo_player().put(uuid, info_player);
+            main.getInfoPlayer().put(uuid, info_player);
         } catch (SQLException e) {
             e.printStackTrace();
             Bukkit.broadcastMessage(ChatColor.GOLD + "Un joueur inconnu vient d'arriver");

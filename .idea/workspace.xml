@@ -4,12 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="da6e7cba-aeda-4b89-b585-1665e8ec2a54" name="Changes" comment="/money">
-      <change afterPath="$PROJECT_DIR$/src/main/java/elc/florian/listener/InvListener.java" afterDir="false" />
+    <list default="true" id="da6e7cba-aeda-4b89-b585-1665e8ec2a54" name="Changes" comment="menu inventory">
+      <change afterPath="$PROJECT_DIR$/src/main/java/elc/florian/other/InfoCity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/elc/florian/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/elc/florian/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/elc/florian/commands/CommandCity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/elc/florian/commands/CommandCity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/elc/florian/commands/CommandMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/elc/florian/commands/CommandMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/elc/florian/commands/CommandMoney.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/elc/florian/commands/CommandMoney.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/elc/florian/commands/CommandSpawn.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/elc/florian/commands/CommandSpawn.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/elc/florian/listener/ChatListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/elc/florian/listener/ChatListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/elc/florian/listener/InvListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/elc/florian/listener/InvListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/elc/florian/listener/JoinListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/elc/florian/listener/JoinListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/plugin.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -103,7 +108,7 @@
       <recent name="D:\devProjects\MC serv\plugins\CraftTown\server" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.CraftTown [build]">
+  <component name="RunManager" selected="JAR Application.spigot-1.19.jar">
     <configuration name="CraftTown [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -205,7 +210,14 @@
       <option name="project" value="LOCAL" />
       <updated>1681112182778</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="menu inventory">
+      <created>1681136346032</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1681136346032</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -217,7 +229,8 @@
     <MESSAGE value="leave/ create city InfoPlayer joinCity" />
     <MESSAGE value="city command clean up" />
     <MESSAGE value="/money" />
-    <option name="LAST_COMMIT_MESSAGE" value="/money" />
+    <MESSAGE value="menu inventory" />
+    <option name="LAST_COMMIT_MESSAGE" value="menu inventory" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

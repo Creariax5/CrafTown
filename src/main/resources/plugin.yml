@@ -18,7 +18,7 @@ commands:
   spawn:
     description: Teleporte au spawn defini.
     aliases:
-      - tp
+      - mairie
   menu:
     description: Ouvre une interface GUI.
     aliases:

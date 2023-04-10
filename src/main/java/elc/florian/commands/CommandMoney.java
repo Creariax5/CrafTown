@@ -31,9 +31,9 @@ public class CommandMoney implements CommandExecutor {
 
 
             if (args.length == 0) {
-                if (main.getInfo_player().containsKey(uuid)) {
+                if (main.getInfoPlayer().containsKey(uuid)) {
 
-                    final InfoPlayer infoPlayer = main.getInfo_player().get(uuid);
+                    final InfoPlayer infoPlayer = main.getInfoPlayer().get(uuid);
                     sender.sendMessage(ChatColor.DARK_GREEN + "Vous avez " + infoPlayer.getMoney() + " sur votre compte");
                 } else {
                     final DbConnection db1Connection = main.getDbManager().getDb1Connection();
@@ -42,12 +42,12 @@ public class CommandMoney implements CommandExecutor {
                     try {
                         connection = db1Connection.getConnection();
                         InfoPlayer info_player = JoinListener.getPlayer(connection, uuid);
-                        main.getInfo_player().put(uuid, info_player);
+                        main.getInfoPlayer().put(uuid, info_player);
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
 
-                    final InfoPlayer infoPlayer = main.getInfo_player().get(uuid);
+                    final InfoPlayer infoPlayer = main.getInfoPlayer().get(uuid);
                     sender.sendMessage(ChatColor.DARK_GREEN + "Vous avez " + infoPlayer.getMoney() + " sur votre compte");
                 }
 
