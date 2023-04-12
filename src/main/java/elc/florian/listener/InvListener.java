@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static elc.florian.commands.CommandCity.getCity;
+import static org.apache.commons.lang3.RegExUtils.replaceAll;
 
 public class InvListener implements Listener {
     @EventHandler
@@ -54,20 +55,24 @@ public class InvListener implements Listener {
             Inventory invCity = Bukkit.createInventory(null, 27, "§4habitants");
 
             invCity.setItem(11, CommandMenu.getPlayerHead("Nombre d'habitants: " + infoCity.getHabs_nb(), "cake"));
-            invCity.setItem(12, CommandMenu.getPlayerHead("Liste des habitants: " + infoCity.getHabs(), "cake"));
+            invCity.setItem(12, CommandMenu.getPlayerHead("Liste des habitants de " + current.getItemMeta().getDisplayName(), "cake"));
             invCity.setItem(14, CommandMenu.getPlayerHead("Maire: " + infoCity.getMaire(), "king"));
             invCity.setItem(15, CommandMenu.getPlayerHead("Niveau: " + infoCity.getLv(), "cake"));
 
             player.openInventory(invCity);
         } else if (event.getView().getTitle().equals("§4habitants")) {
             player.closeInventory();
-            InfoCity infoCity = CommandCity.infoCity(current.getItemMeta().getDisplayName(), player);
+            String city = replaceAll(current.getItemMeta().getDisplayName(), "Liste des habitants de ", "");
+            player.sendMessage(city);
+            InfoCity infoCity = CommandCity.infoCity(city, player);
             List<String> habsList = new ArrayList<>(Arrays.asList(infoCity.getHabs().split(" ")));
 
             Inventory invHabs = Bukkit.createInventory(null, 54, "§4ville");
 
-            for (int i = 0; i < habsList.size(); i++) {
-                invHabs.setItem(i, CommandMenu.getPlayerHead(player.getName(), player.getName()));
+            for (int i = 1; i < habsList.size(); i++) {
+                player.sendMessage(habsList.toString());
+                player.sendMessage(habsList.get(i));
+                invHabs.setItem(i-1, CommandMenu.getPlayerHead(habsList.get(i), habsList.get(i)));
             }
 
             player.openInventory(invHabs);
