@@ -7,6 +7,7 @@ import elc.florian.other.InfoCity;
 import elc.florian.other.InfoMarket;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -36,21 +37,68 @@ public class InvListener implements Listener {
             return;
         }
 
+        List<String> types = Arrays.asList("block", "item", "food",  "tool");
+        List<String> params = Arrays.asList("search", "trier", "add item");
         if (event.getView().getTitle().equals("§5market")) {
-            player.closeInventory();
-            Inventory invMarcket = CommandMarket.baseMarket();
+            if (types.contains(current.getItemMeta().getDisplayName())) {
+                player.closeInventory();
+                Inventory invMarcket = CommandMarket.baseMarket();
 
-            invMarcket = marketByType(invMarcket, current.getItemMeta().getDisplayName());
-            player.openInventory(invMarcket);
+                marketByType(invMarcket, current.getItemMeta().getDisplayName());
+                player.openInventory(invMarcket);
+            } else if (params.contains(current.getItemMeta().getDisplayName())) {
+                player.closeInventory();
+            } else {
+                player.closeInventory();
+                Inventory invItem = itemActionGui(current.getItemMeta().getDisplayName());
+                player.openInventory(invItem);
+            }
         }
+        if (event.getView().getTitle().substring(0, 6).equals("§5item")) {
+            if (current.getItemMeta().getDisplayName().equals("§abuy x64")){
+                player.closeInventory();
+                CommandMarket.buyItem(event.getView().getTitle().substring(10), 64, player);
+
+            } else if (current.getItemMeta().getDisplayName().equals("§abuy x1")) {
+                player.closeInventory();
+                Bukkit.broadcastMessage(current.getItemMeta().getDisplayName());
+
+            } else if (current.getItemMeta().getDisplayName().equals("§asell x64")) {
+                player.closeInventory();
+                Bukkit.broadcastMessage(current.getItemMeta().getDisplayName());
+
+            } else if (current.getItemMeta().getDisplayName().equals("§asell x1")) {
+                player.closeInventory();
+                Bukkit.broadcastMessage(current.getItemMeta().getDisplayName());
+
+            } else {
+                player.closeInventory();
+                Inventory invItem = itemActionGui(current.getItemMeta().getDisplayName());
+                player.openInventory(invItem);
+            }
+        }
+
     }
 
-    private Inventory marketByType(Inventory invMarcket, String type) {
+    private Inventory itemActionGui(String displayName) {
+        Inventory inv = Bukkit.createInventory(null, 36, "§5item -> " + replaceAll(displayName, "§b", ""));
+        Bukkit.broadcastMessage(displayName);
+
+        inv.setItem(10, CommandMenu.getItem64(Material.LIME_CONCRETE, "§abuy x64"));
+        inv.setItem(11, CommandMenu.getItem(Material.LIME_CONCRETE_POWDER, "§abuy x1"));
+        inv.setItem(13, CommandMenu.getItem(Material.matchMaterial(replaceAll(displayName, "§b", "")), displayName));
+        inv.setItem(15, CommandMenu.getItem(Material.RED_CONCRETE_POWDER, "§csell x1"));
+        inv.setItem(16, CommandMenu.getItem64(Material.RED_CONCRETE, "§csell x64"));
+
+        return inv;
+    }
+
+    public static Inventory marketByType(Inventory invMarcket, String type) {
         List<InfoMarket> listInfoMarket = CommandMarket.getInfoMarketByType(type);
 
         int i = 2+9;
         for (InfoMarket infoMarket : listInfoMarket) {
-            invMarcket.setItem(i, CommandMenu.getAdvancedItem(infoMarket.getMaterial(), 0, infoMarket.getPrice(), infoMarket.getTaxe()));
+            invMarcket.setItem(i, CommandMenu.getAdvancedItem(infoMarket.getMaterial(), infoMarket.getProduct(), infoMarket.getCoin(), infoMarket.getTaxe()));
             i++;
         }
         return invMarcket;

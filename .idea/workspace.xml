@@ -4,10 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="da6e7cba-aeda-4b89-b585-1665e8ec2a54" name="Changes" comment="db market item by type">
+    <list default="true" id="da6e7cba-aeda-4b89-b585-1665e8ec2a54" name="Changes" comment="item custom lore">
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/elc/florian/commands/CommandMarket.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/elc/florian/commands/CommandMarket.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/elc/florian/commands/CommandMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/elc/florian/commands/CommandMenu.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/elc/florian/listener/InvListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/elc/florian/listener/InvListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/elc/florian/other/InfoMarket.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/elc/florian/other/InfoMarket.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -82,18 +86,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/devProjects/MC serv/plugins/CraftTown&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "D:/devProjects/MC serv/plugins/CraftTown",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mariadb",
+      "mysql"
+    ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="elc.florian.commands" />
@@ -111,7 +128,7 @@
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
+        <option name="scriptParameters" value="" />
         <option name="taskDescriptions">
           <list />
         </option>
@@ -125,6 +142,7 @@
       <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
+      <ForceTestExec>false</ForceTestExec>
       <method v="2" />
     </configuration>
     <configuration name="spigot-1.19.jar" type="JarApplication">
@@ -135,6 +153,10 @@
       <option name="ALTERNATIVE_JRE_PATH" value="corretto-17" />
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Gradle.CraftTown [build]" />
+      <item itemvalue="JAR Application.spigot-1.19.jar" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Gradle.CraftTown [build]" />
@@ -149,6 +171,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1680338435792</updated>
+      <workItem from="1681571000356" duration="6128000" />
     </task>
     <task id="LOCAL-00001" summary="setup craftTown">
       <created>1680339990351</created>
@@ -234,8 +257,21 @@
       <option name="project" value="LOCAL" />
       <updated>1681547013323</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="item custom lore">
+      <created>1681552412142</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1681552412142</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.facetType" implementationName="minecraft" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="setup craftTown" />
@@ -250,7 +286,8 @@
     <MESSAGE value="city list gui" />
     <MESSAGE value="gui players in city" />
     <MESSAGE value="db market item by type" />
-    <option name="LAST_COMMIT_MESSAGE" value="db market item by type" />
+    <MESSAGE value="item custom lore" />
+    <option name="LAST_COMMIT_MESSAGE" value="item custom lore" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

@@ -37,12 +37,21 @@ public class CommandMenu implements CommandExecutor {
         return itemStack;
     }
 
-    public static ItemStack getAdvancedItem(String material, int units, float price, float taxe) {
+    public static ItemStack getItem64(Material material, String displayName) {
+        ItemStack itemStack = new ItemStack(material, 64);
+        ItemMeta itemStackM = itemStack.getItemMeta();
+        itemStackM.setDisplayName(displayName);
+        itemStack.setItemMeta(itemStackM);
+        return itemStack;
+    }
+
+    public static ItemStack getAdvancedItem(String material, int product, float coin, float taxe) {
 
         ItemStack itemStack = new ItemStack(Material.matchMaterial(material));
         ItemMeta itemStackM = itemStack.getItemMeta();
         itemStackM.setDisplayName("§b" + material);
-        itemStackM.setLore(Arrays.asList("§8" + units + " units", "", "§7buy: §6" + price + " coins", "§7sell: §6" + price + " coins", "", "§eClic to view product"));
+        float price = coin / product;
+        itemStackM.setLore(Arrays.asList("§8" + product + " units", "", "§7buy: §6" + price + " coins", "§7sell: §6" + price + " coins", "", "§eClic to view product"));
         itemStackM.setLocalizedName("local");
         itemStack.setItemMeta(itemStackM);
         return itemStack;

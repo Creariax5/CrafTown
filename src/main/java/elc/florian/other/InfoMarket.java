@@ -5,8 +5,8 @@ public class InfoMarket {
     private String type;
     private float price;
     private float taxe;
-    private int buy;
-    private int sell;
+    private int product;
+    private int coin;
 
     public String getMaterial() {
         return material;
@@ -20,24 +20,24 @@ public class InfoMarket {
         return taxe;
     }
 
-    public int getBuy() {
-        return buy;
+    public int getProduct() {
+        return product;
     }
 
-    public int getSell() {
-        return sell;
+    public int getCoin() {
+        return coin;
     }
 
     public String getType() {
         return type;
     }
 
-    public InfoMarket(String material, String type, float price, float taxe, int buy, int sell) {
+    public InfoMarket(String material, String type, float price, float taxe, int product, int coin) {
         this.material = material;
         this.type = type;
         this.price = price;
         this.taxe = taxe;
-        this.buy = buy;
-        this.sell = sell;
+        this.product = product;
+        this.coin = coin;
     }
 }
