@@ -61,7 +61,7 @@ public class InvListener implements Listener {
 
             } else if (current.getItemMeta().getDisplayName().equals("§abuy x1")) {
                 player.closeInventory();
-                Bukkit.broadcastMessage(current.getItemMeta().getDisplayName());
+                CommandMarket.buyItem(event.getView().getTitle().substring(10), 1, player);
 
             } else if (current.getItemMeta().getDisplayName().equals("§asell x64")) {
                 player.closeInventory();

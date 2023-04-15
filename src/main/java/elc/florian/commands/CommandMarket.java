@@ -14,6 +14,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -197,46 +198,61 @@ public class CommandMarket implements CommandExecutor {
 
         InfoPlayer infoPlayer = getInfoPlayerAuto(uuid);
         InfoMarket infoMarket = getInfoMarketByName(item);
+        int toPay = (int) (infoMarket.getPrice() * amount);
+        int money = infoPlayer.getMoney();
+        int product = infoMarket.getProduct();
+        int coin = infoMarket.getCoin();
 
-        if (infoPlayer.getMoney() >= infoMarket.getPrice() * amount) {
-            int money = infoPlayer.getMoney() - (int) infoMarket.getPrice() * amount;
-            int product = infoMarket.getProduct() - amount;
-            int coin = infoMarket.getCoin() + (int) infoMarket.getPrice() * amount;
-            float price = (float) coin / product;
+        if (money >= toPay) {
+            if (amount <= product) {
+                money = money - toPay;
+                product = product - amount;
+                coin = coin + toPay;
+                float price = (float) coin / product;
 
-            InfoPlayer infoPlayer1 = new InfoPlayer(player.getUniqueId(), infoPlayer.getGrade(), infoPlayer.getVille(), infoPlayer.getLv(), infoPlayer.getTravail(), money);
-            main.getInfoPlayer().put(player.getUniqueId(), infoPlayer1);
+                InfoPlayer infoPlayer1 = new InfoPlayer(player.getUniqueId(), infoPlayer.getGrade(), infoPlayer.getVille(), infoPlayer.getLv(), infoPlayer.getTravail(), money);
+                main.getInfoPlayer().put(player.getUniqueId(), infoPlayer1);
 
-            InfoMarket infoMarket1 = new InfoMarket(item, infoMarket.getType(), price, infoMarket.getTaxe(), product, coin);
-            main.getInfoMarket().put(item, infoMarket1);
+                InfoMarket infoMarket1 = new InfoMarket(item, infoMarket.getType(), price, infoMarket.getTaxe(), product, coin);
+                main.getInfoMarket().put(item, infoMarket1);
 
-            final DbConnection db1Connection = main.getDbManager().getDb1Connection();
-            try {
-                final Connection connection = db1Connection.getConnection();
+                final DbConnection db1Connection = main.getDbManager().getDb1Connection();
+                try {
+                    final Connection connection = db1Connection.getConnection();
 
-                final PreparedStatement preparedStatement2 = connection.prepareStatement("UPDATE market SET price = ?, product = ?, coin = ?, updated_at = ? WHERE material = ?");
-                final long time = System.currentTimeMillis();
+                    final PreparedStatement preparedStatement2 = connection.prepareStatement("UPDATE market SET price = ?, product = ?, coin = ?, updated_at = ? WHERE material = ?");
+                    final long time = System.currentTimeMillis();
 
-                preparedStatement2.setFloat(1, price);
-                preparedStatement2.setInt(2, product);
-                preparedStatement2.setInt(3, coin);
-                preparedStatement2.setTimestamp(4, new Timestamp(time));
-                preparedStatement2.setString(5, item);
+                    preparedStatement2.setFloat(1, price);
+                    preparedStatement2.setInt(2, product);
+                    preparedStatement2.setInt(3, coin);
+                    preparedStatement2.setTimestamp(4, new Timestamp(time));
+                    preparedStatement2.setString(5, item);
 
-                preparedStatement2.executeUpdate();
+                    preparedStatement2.executeUpdate();
 
-                final PreparedStatement preparedStatement3 = connection.prepareStatement("UPDATE player SET money = ?, updated_at = ? WHERE uuid = ?");
+                    final PreparedStatement preparedStatement3 = connection.prepareStatement("UPDATE player SET money = ?, updated_at = ? WHERE uuid = ?");
 
-                preparedStatement3.setInt(1, money);
-                preparedStatement3.setTimestamp(2, new Timestamp(time));
-                preparedStatement3.setString(3, uuid.toString());
+                    preparedStatement3.setInt(1, money);
+                    preparedStatement3.setTimestamp(2, new Timestamp(time));
+                    preparedStatement3.setString(3, uuid.toString());
 
-                preparedStatement3.executeUpdate();
-            } catch (SQLException e) {
-                e.printStackTrace();
+                    preparedStatement3.executeUpdate();
+
+
+                    player.getInventory().addItem(new ItemStack(Objects.requireNonNull(Material.matchMaterial(item)), amount));
+                    player.updateInventory();
+                    player.sendMessage(ChatColor.GREEN + "Achat effectué");
+
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    player.sendMessage(ChatColor.RED + "ERROR");
+                }
+            } else {
+                player.sendMessage(ChatColor.RED + "Pas assez de produits a vendre, produits disponibles: " + product + ", quantité de votre achat: " + amount);
             }
         } else {
-            player.sendMessage(ChatColor.RED + "pas assez d'argent " + infoPlayer.getMoney() + infoMarket.getPrice() * amount);
+            player.sendMessage(ChatColor.RED + "pas assez d'argent, vous avez: " + money + " coins, et le total de votre achat est de " + toPay + " coins");
         }
     }
 

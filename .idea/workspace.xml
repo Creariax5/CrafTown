@@ -4,14 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="da6e7cba-aeda-4b89-b585-1665e8ec2a54" name="Changes" comment="item custom lore">
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
+    <list default="true" id="da6e7cba-aeda-4b89-b585-1665e8ec2a54" name="Changes" comment="buy system">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/elc/florian/commands/CommandMarket.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/elc/florian/commands/CommandMarket.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/elc/florian/commands/CommandMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/elc/florian/commands/CommandMenu.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/elc/florian/listener/InvListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/elc/florian/listener/InvListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/elc/florian/other/InfoMarket.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/elc/florian/other/InfoMarket.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -171,7 +167,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1680338435792</updated>
-      <workItem from="1681571000356" duration="6128000" />
+      <workItem from="1681571000356" duration="8519000" />
     </task>
     <task id="LOCAL-00001" summary="setup craftTown">
       <created>1680339990351</created>
@@ -264,7 +260,14 @@
       <option name="project" value="LOCAL" />
       <updated>1681552412142</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="buy system">
+      <created>1681577277246</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1681577277246</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -287,7 +290,8 @@
     <MESSAGE value="gui players in city" />
     <MESSAGE value="db market item by type" />
     <MESSAGE value="item custom lore" />
-    <option name="LAST_COMMIT_MESSAGE" value="item custom lore" />
+    <MESSAGE value="buy system" />
+    <option name="LAST_COMMIT_MESSAGE" value="buy system" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
