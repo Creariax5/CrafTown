@@ -63,13 +63,13 @@ public class InvListener implements Listener {
                 player.closeInventory();
                 CommandMarket.buyItem(event.getView().getTitle().substring(10), 1, player);
 
-            } else if (current.getItemMeta().getDisplayName().equals("§asell x64")) {
+            } else if (current.getItemMeta().getDisplayName().equals("§csell x64")) {
                 player.closeInventory();
-                Bukkit.broadcastMessage(current.getItemMeta().getDisplayName());
+                CommandMarket.sellItem(event.getView().getTitle().substring(10), 64, player);
 
-            } else if (current.getItemMeta().getDisplayName().equals("§asell x1")) {
+            } else if (current.getItemMeta().getDisplayName().equals("§csell x1")) {
                 player.closeInventory();
-                Bukkit.broadcastMessage(current.getItemMeta().getDisplayName());
+                CommandMarket.sellItem(event.getView().getTitle().substring(10), 1, player);
 
             } else {
                 player.closeInventory();
@@ -82,7 +82,6 @@ public class InvListener implements Listener {
 
     private Inventory itemActionGui(String displayName) {
         Inventory inv = Bukkit.createInventory(null, 36, "§5item -> " + replaceAll(displayName, "§b", ""));
-        Bukkit.broadcastMessage(displayName);
 
         inv.setItem(10, CommandMenu.getItem64(Material.LIME_CONCRETE, "§abuy x64"));
         inv.setItem(11, CommandMenu.getItem(Material.LIME_CONCRETE_POWDER, "§abuy x1"));
