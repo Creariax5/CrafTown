@@ -23,6 +23,11 @@ commands:
     description: Ouvre une interface GUI.
     aliases:
       - gui
+  market:
+    description: Ouvre le  marcket.
+    aliases:
+      - ah
+      - shop
   bridge:
     description: Set des blocks en dessous du joueur.
     aliases:

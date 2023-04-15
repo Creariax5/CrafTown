@@ -27,7 +27,7 @@ public class CommandMenu implements CommandExecutor {
         return false;
     }
 
-    public ItemStack getItem(Material material, String displayName) {
+    public static ItemStack getItem(Material material, String displayName) {
         ItemStack itemStack = new ItemStack(material);
         ItemMeta itemStackM = itemStack.getItemMeta();
         itemStackM.setDisplayName(displayName);

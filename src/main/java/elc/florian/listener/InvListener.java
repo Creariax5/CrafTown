@@ -1,10 +1,13 @@
 package elc.florian.listener;
 
 import elc.florian.commands.CommandCity;
+import elc.florian.commands.CommandMarket;
 import elc.florian.commands.CommandMenu;
 import elc.florian.other.InfoCity;
+import elc.florian.other.InfoMarket;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -22,7 +25,39 @@ import static org.apache.commons.lang3.RegExUtils.replaceAll;
 public class InvListener implements Listener {
     @EventHandler
     public void onClick(InventoryClickEvent event) {
-        Inventory inv = event.getInventory();
+        cityGui(event);
+        marcketGui(event);
+    }
+
+    private void marcketGui(InventoryClickEvent event) {
+        Player player = (Player) event.getWhoClicked();
+        ItemStack current = event.getCurrentItem();
+
+        if (current == null) {
+            return;
+        }
+
+        if (event.getView().getTitle().equals("§5market")) {
+            player.closeInventory();
+            Inventory invMarcket = CommandMarket.baseMarket();
+
+            invMarcket = marketByType(invMarcket, current.getItemMeta().getDisplayName());
+            player.openInventory(invMarcket);
+        }
+    }
+
+    private Inventory marketByType(Inventory invMarcket, String type) {
+        List<InfoMarket> listInfoMarket = CommandMarket.getInfoMarketByType(type);
+
+        int i = 2+9;
+        for (InfoMarket infoMarket : listInfoMarket) {
+            invMarcket.setItem(i, CommandMenu.getItem(Material.matchMaterial(infoMarket.getMaterial()), infoMarket.getMaterial()));
+            i++;
+        }
+        return invMarcket;
+    }
+
+    private void cityGui(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
         ItemStack current = event.getCurrentItem();
 
@@ -63,15 +98,12 @@ public class InvListener implements Listener {
         } else if (event.getView().getTitle().equals("§4habitants")) {
             player.closeInventory();
             String city = replaceAll(current.getItemMeta().getDisplayName(), "Liste des habitants de ", "");
-            player.sendMessage(city);
             InfoCity infoCity = CommandCity.infoCity(city, player);
             List<String> habsList = new ArrayList<>(Arrays.asList(infoCity.getHabs().split(" ")));
 
             Inventory invHabs = Bukkit.createInventory(null, 54, "§4ville");
 
             for (int i = 1; i < habsList.size(); i++) {
-                player.sendMessage(habsList.toString());
-                player.sendMessage(habsList.get(i));
                 invHabs.setItem(i-1, CommandMenu.getPlayerHead(habsList.get(i), habsList.get(i)));
             }
 

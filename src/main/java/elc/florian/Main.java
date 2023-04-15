@@ -4,12 +4,14 @@ import elc.florian.commands.*;
 import elc.florian.db.DbManager;
 import elc.florian.listener.ChatListener;
 import elc.florian.listener.InvListener;
-import elc.florian.other.InfoCity;
-import elc.florian.other.InfoPlayer;
 import elc.florian.listener.JoinListener;
+import elc.florian.other.InfoCity;
+import elc.florian.other.InfoMarket;
+import elc.florian.other.InfoPlayer;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -18,6 +20,8 @@ public class Main extends JavaPlugin {
     private DbManager dbManager;
     private HashMap<UUID, InfoPlayer> infoPlayer;
     private HashMap<String, InfoCity> infoCity;
+    private HashMap<String, InfoMarket> infoMarket;
+    private HashMap<String, List<String>> infoMarketByType;
 
     @Override
     public void onEnable() {
@@ -25,6 +29,8 @@ public class Main extends JavaPlugin {
         dbManager = new DbManager();
         infoPlayer = new HashMap<>();
         infoCity = new HashMap<>();
+        infoMarket  = new HashMap<>();
+        infoMarketByType  = new HashMap<>();
         System.out.println("CraftTown started !");
 
         getCommand("alert").setExecutor(new CommandAlert());
@@ -32,6 +38,7 @@ public class Main extends JavaPlugin {
         getCommand("money").setExecutor(new CommandMoney(INSTANCE));
         getCommand("spawn").setExecutor(new CommandSpawn());
         getCommand("menu").setExecutor(new CommandMenu());
+        getCommand("market").setExecutor(new CommandMarket(INSTANCE));
         getCommand("bridge").setExecutor(new CommandAutoBridge());
         this.getServer().getPluginManager().registerEvents(new JoinListener(this), this);
         this.getServer().getPluginManager().registerEvents(new ChatListener(this), this);
@@ -53,5 +60,11 @@ public class Main extends JavaPlugin {
     }
     public HashMap<String, InfoCity> getInfoCity() {
         return infoCity;
+    }
+    public HashMap<String, InfoMarket> getInfoMarket() {
+        return infoMarket;
+    }
+    public HashMap<String, List<String>> getInfoMarketByType() {
+        return infoMarketByType;
     }
 }
