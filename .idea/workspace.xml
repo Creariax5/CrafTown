@@ -4,14 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="da6e7cba-aeda-4b89-b585-1665e8ec2a54" name="Changes" comment="gui players in city">
-      <change afterPath="$PROJECT_DIR$/src/main/java/elc/florian/commands/CommandMarket.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/elc/florian/other/InfoMarket.java" afterDir="false" />
+    <list default="true" id="da6e7cba-aeda-4b89-b585-1665e8ec2a54" name="Changes" comment="db market item by type">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/elc/florian/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/elc/florian/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/elc/florian/commands/CommandMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/elc/florian/commands/CommandMenu.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/elc/florian/listener/InvListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/elc/florian/listener/InvListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/plugin.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -231,7 +227,14 @@
       <option name="project" value="LOCAL" />
       <updated>1681307819116</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="db market item by type">
+      <created>1681547013323</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1681547013323</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -246,7 +249,8 @@
     <MESSAGE value="menu inventory" />
     <MESSAGE value="city list gui" />
     <MESSAGE value="gui players in city" />
-    <option name="LAST_COMMIT_MESSAGE" value="gui players in city" />
+    <MESSAGE value="db market item by type" />
+    <option name="LAST_COMMIT_MESSAGE" value="db market item by type" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

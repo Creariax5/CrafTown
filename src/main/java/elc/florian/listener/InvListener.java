@@ -7,7 +7,6 @@ import elc.florian.other.InfoCity;
 import elc.florian.other.InfoMarket;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -51,7 +50,7 @@ public class InvListener implements Listener {
 
         int i = 2+9;
         for (InfoMarket infoMarket : listInfoMarket) {
-            invMarcket.setItem(i, CommandMenu.getItem(Material.matchMaterial(infoMarket.getMaterial()), infoMarket.getMaterial()));
+            invMarcket.setItem(i, CommandMenu.getAdvancedItem(infoMarket.getMaterial(), 0, infoMarket.getPrice(), infoMarket.getTaxe()));
             i++;
         }
         return invMarcket;

@@ -12,6 +12,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
+import java.util.Arrays;
+
 public class CommandMenu implements CommandExecutor {
 
     @Override
@@ -31,6 +33,17 @@ public class CommandMenu implements CommandExecutor {
         ItemStack itemStack = new ItemStack(material);
         ItemMeta itemStackM = itemStack.getItemMeta();
         itemStackM.setDisplayName(displayName);
+        itemStack.setItemMeta(itemStackM);
+        return itemStack;
+    }
+
+    public static ItemStack getAdvancedItem(String material, int units, float price, float taxe) {
+
+        ItemStack itemStack = new ItemStack(Material.matchMaterial(material));
+        ItemMeta itemStackM = itemStack.getItemMeta();
+        itemStackM.setDisplayName("§b" + material);
+        itemStackM.setLore(Arrays.asList("§8" + units + " units", "", "§7buy: §6" + price + " coins", "§7sell: §6" + price + " coins", "", "§eClic to view product"));
+        itemStackM.setLocalizedName("local");
         itemStack.setItemMeta(itemStackM);
         return itemStack;
     }
