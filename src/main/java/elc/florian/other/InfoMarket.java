@@ -6,7 +6,7 @@ public class InfoMarket {
     private float price;
     private float taxe;
     private int product;
-    private int coin;
+    private float coin;
 
     public String getMaterial() {
         return material;
@@ -24,7 +24,7 @@ public class InfoMarket {
         return product;
     }
 
-    public int getCoin() {
+    public float getCoin() {
         return coin;
     }
 
@@ -32,7 +32,7 @@ public class InfoMarket {
         return type;
     }
 
-    public InfoMarket(String material, String type, float price, float taxe, int product, int coin) {
+    public InfoMarket(String material, String type, float price, float taxe, int product, float coin) {
         this.material = material;
         this.type = type;
         this.price = price;

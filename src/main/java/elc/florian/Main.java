@@ -19,6 +19,7 @@ public class Main extends JavaPlugin {
     public static Main INSTANCE;
     private DbManager dbManager;
     private HashMap<UUID, InfoPlayer> infoPlayer;
+    private HashMap<String, UUID> usernameToUUID;
     private HashMap<String, InfoCity> infoCity;
     private HashMap<String, InfoMarket> infoMarket;
     private HashMap<String, List<String>> infoMarketByType;
@@ -28,6 +29,7 @@ public class Main extends JavaPlugin {
         INSTANCE = this;
         dbManager = new DbManager();
         infoPlayer = new HashMap<>();
+        usernameToUUID = new HashMap<>();
         infoCity = new HashMap<>();
         infoMarket  = new HashMap<>();
         infoMarketByType  = new HashMap<>();
@@ -57,6 +59,9 @@ public class Main extends JavaPlugin {
 
     public HashMap<UUID, InfoPlayer> getInfoPlayer() {
         return infoPlayer;
+    }
+    public HashMap<String, UUID> getUsernameToUUID() {
+        return usernameToUUID;
     }
     public HashMap<String, InfoCity> getInfoCity() {
         return infoCity;

@@ -40,6 +40,7 @@ public class JoinListener implements WebSocket.Listener, Listener {
 
             Bukkit.broadcastMessage(ChatColor.AQUA + "[" + ChatColor.LIGHT_PURPLE + info_player.getGrade() + ChatColor.AQUA + "] " + player.getName() + ChatColor.GOLD + " s'est réveillé");
             main.getInfoPlayer().put(uuid, info_player);
+            main.getUsernameToUUID().put(info_player.getUsername(), uuid);
         } catch (SQLException e) {
             e.printStackTrace();
             Bukkit.broadcastMessage(ChatColor.GOLD + "Un joueur inconnu vient d'arriver");
@@ -69,6 +70,7 @@ public class JoinListener implements WebSocket.Listener, Listener {
 
     public static InfoPlayer getPlayer(Connection connection, UUID uuid) {
 
+        String username;
         String grade;
         String ville;
         int lv;
@@ -78,19 +80,20 @@ public class JoinListener implements WebSocket.Listener, Listener {
 
         InfoPlayer info_player = null;
         try {
-            final PreparedStatement preparedStatement = connection.prepareStatement("SELECT grade, ville, lv, travail, money FROM player WHERE uuid = ?");
+            final PreparedStatement preparedStatement = connection.prepareStatement("SELECT pseudo, grade, ville, lv, travail, money FROM player WHERE uuid = ?");
 
             preparedStatement.setString(1, uuid.toString());
             final ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
-                grade = (resultSet.getString(1));
-                ville = (resultSet.getString(2));
-                lv = (resultSet.getInt(3));
-                travail = (resultSet.getString(4));
-                money = (resultSet.getInt(5));
+                username = (resultSet.getString(1));
+                grade = (resultSet.getString(2));
+                ville = (resultSet.getString(3));
+                lv = (resultSet.getInt(4));
+                travail = (resultSet.getString(5));
+                money = (resultSet.getInt(6));
 
-                info_player = new InfoPlayer(uuid, grade, ville, lv, travail, money);
+                info_player = new InfoPlayer(uuid, username, grade, ville, lv, travail, money);
             }
 
         } catch (SQLException e) {

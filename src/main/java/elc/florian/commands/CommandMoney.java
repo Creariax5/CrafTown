@@ -43,6 +43,7 @@ public class CommandMoney implements CommandExecutor {
                         connection = db1Connection.getConnection();
                         InfoPlayer info_player = JoinListener.getPlayer(connection, uuid);
                         main.getInfoPlayer().put(uuid, info_player);
+                        main.getUsernameToUUID().put(info_player.getUsername(), uuid);
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }

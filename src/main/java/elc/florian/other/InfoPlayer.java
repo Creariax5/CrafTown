@@ -1,8 +1,5 @@
 package elc.florian.other;
 
-import elc.florian.Main;
-import elc.florian.db.DbConnection;
-import elc.florian.listener.JoinListener;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
@@ -12,15 +9,17 @@ import java.util.UUID;
 
 public class InfoPlayer {
     private UUID uuid;
+    private String username;
     private String grade;
     private String ville;
     private int lv;
     private String travail;
-    private int money;
+    private float money;
 
 
-    public InfoPlayer(UUID uuid, String grade, String ville, int lv, String travail, int money) {
+    public InfoPlayer(UUID uuid, String username, String grade, String ville, int lv, String travail, float money) {
         this.uuid = uuid;
+        this.username = username;
         this.grade = grade;
         this.ville = ville;
         this.lv = lv;
@@ -30,6 +29,10 @@ public class InfoPlayer {
 
     public UUID getUuid() {
         return uuid;
+    }
+
+    public String getUsername() {
+        return username;
     }
 
     public String getGrade() {
@@ -48,7 +51,7 @@ public class InfoPlayer {
         return travail;
     }
 
-    public int getMoney() {
+    public float getMoney() {
         return money;
     }
 
