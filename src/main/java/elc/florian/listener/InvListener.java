@@ -17,7 +17,8 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
-import static elc.florian.commands.CommandCity.getCity;
+import static elc.florian.commands.CommandMenu.getItem;
+import static elc.florian.commands.CommandMenu.getPlayerHead;
 import static org.apache.commons.lang3.RegExUtils.replaceAll;
 
 public class InvListener implements Listener {
@@ -33,13 +34,92 @@ public class InvListener implements Listener {
         Player player = (Player) event.getWhoClicked();
         ItemStack current = event.getCurrentItem();
 
-        if (current.getItemMeta().getDisplayName().equals("back to menu")){
+        assert current != null;
+        if (Objects.requireNonNull(current.getItemMeta()).getDisplayName().equals("back to menu")){
             player.closeInventory();
             CommandMenu.openMenu(player);
         } else if (event.getView().getTitle().equals("§4info perso")) {
-            event.setCancelled(true);
-            return;
+            String[] prefix = Objects.requireNonNull(current.getItemMeta()).getDisplayName().split(": ");
+            String invOwner = Objects.requireNonNull(Objects.requireNonNull(event.getInventory().getItem(13)).getItemMeta()).getDisplayName();
+            if (invOwner.equals(player.getDisplayName())) {
+                if (prefix[0].equals("Ville")) {
+                    player.closeInventory();
+                    manageMyCityGui(prefix[1], player);
+                } else {
+                    event.setCancelled(true);
+                    return;
+                }
+            } else {
+                event.setCancelled(true);
+                return;
+            }
+        } else if (event.getView().getTitle().equals("§5gerer ma ville")) {
+            String[] prefix = Objects.requireNonNull(current.getItemMeta()).getDisplayName().split(" ");
+            if (prefix[0].equals("Quitter")) {
+                player.closeInventory();
+                CommandCity.leaveCity(player);
+
+
+
+            } else if (prefix[0].equals("Rejoindre")) {
+                cityToJoinGui(player);
+            } else {
+                event.setCancelled(true);
+                return;
+            }
+        } else if (event.getView().getTitle().equals("§5Choisir une ville a rejoindre")) {
+            String item = Objects.requireNonNull(current.getItemMeta()).getDisplayName();
+            if (item.equals(" ")) {
+                event.setCancelled(true);
+                return;
+
+            } else if (item.equals("back to menu")) {
+                player.closeInventory();
+                CommandMenu.openMenu(player);
+
+            } else {
+                player.closeInventory();
+                String city = current.getItemMeta().getDisplayName();
+                CommandCity.joinCity(city, player);
+
+                openCityInfoGui(player, city);
+            }
         }
+    }
+
+    private void cityToJoinGui(Player player) {
+        player.closeInventory();
+
+        List<String> cityList = new ArrayList<>();
+        CommandCity.getCity(cityList);
+        Inventory invCity = Bukkit.createInventory(null, 54, "§5Choisir une ville a rejoindre");
+        String color = "GREEN";
+        roundGui(invCity, color);
+
+        for (int i = 10; i < cityList.size() + 10; i++) {
+            invCity.setItem(i, getPlayerHead(cityList.get(i - 10), "cake"));
+        }
+
+        invCity.setItem(49, CommandMenu.getItem(Material.ARROW, "back"));
+
+        player.openInventory(invCity);
+    }
+
+    private void manageMyCityGui(String city, Player player) {
+        Inventory inv = Bukkit.createInventory(null, 27, "§5gerer ma ville");
+
+        if (city.equals("rural")) {
+            inv.setItem(13, getItem(Material.LIME_CONCRETE, "Rejoindre une ville"));
+
+        } else {
+
+            inv.setItem(11, getItem(Material.RED_CONCRETE, "Quitter " + city));
+            inv.setItem(13, getPlayerHead("Ma ville: " + city, "cake"));
+            inv.setItem(15, getPlayerHead("§6ma reputation a " + city, player.getName()));
+        }
+
+
+        player.openInventory(inv);
     }
 
     private void menuGui(InventoryClickEvent event) {
@@ -49,25 +129,10 @@ public class InvListener implements Listener {
         if (current == null) {
             return;
         }
-        List<String> cityList = new ArrayList<>();
 
         if (event.getView().getTitle().equals("§5menu")) {
-            if (current.getItemMeta().getDisplayName().equals("§6city")) {
-                player.closeInventory();
-                getCity(cityList);
-                Inventory invCity = Bukkit.createInventory(null, 54, "§5city");
-
-                String color = "GREEN";
-
-                roundGui(invCity, color);
-
-                for (int i = 10; i < cityList.size() + 10; i++) {
-                    invCity.setItem(i, CommandMenu.getPlayerHead(cityList.get(i - 10), "cake"));
-                }
-
-                invCity.setItem(49, CommandMenu.getItem(Material.ARROW, "back to menu"));
-
-                player.openInventory(invCity);
+            if (Objects.requireNonNull(current.getItemMeta()).getDisplayName().equals("§6city")) {
+                listCityGui(player);
 
             } else if (current.getItemMeta().getDisplayName().equals("§6market")) {
                 player.closeInventory();
@@ -83,19 +148,39 @@ public class InvListener implements Listener {
         }
     }
 
+    private void listCityGui(Player player) {
+        player.closeInventory();
+        List<String> cityList = new ArrayList<>();
+
+        CommandCity.getCity(cityList);
+        Inventory invCity = Bukkit.createInventory(null, 54, "§5city");
+
+        String color = "GREEN";
+
+        roundGui(invCity, color);
+
+        for (int i = 10; i < cityList.size() + 10; i++) {
+            invCity.setItem(i, getPlayerHead(cityList.get(i - 10), "cake"));
+        }
+
+        invCity.setItem(49, CommandMenu.getItem(Material.ARROW, "back to menu"));
+
+        player.openInventory(invCity);
+    }
+
     private Inventory invPerso(UUID uuid, String name) {
         InfoPlayer infoPlayer = CommandMarket.getInfoPlayerAuto(uuid);
 
         Inventory invPerso = Bukkit.createInventory(null, 27, "§4info perso");
 
 
-        invPerso.setItem(10, CommandMenu.getPlayerHead("Grade: " + infoPlayer.getGrade(), "cake"));
-        invPerso.setItem(11, CommandMenu.getPlayerHead("Ville: " + infoPlayer.getVille(), "cake"));
-        invPerso.setItem(4, CommandMenu.getPlayerHead("Niveau: " + infoPlayer.getLv(), "cake"));
-        invPerso.setItem(13, CommandMenu.getPlayerHead(name, name));
+        invPerso.setItem(10, getPlayerHead("Grade: " + infoPlayer.getGrade(), "cake"));
+        invPerso.setItem(11, getPlayerHead("Ville: " + infoPlayer.getVille(), "cake"));
+        invPerso.setItem(4, getPlayerHead("Niveau: " + infoPlayer.getLv(), "cake"));
+        invPerso.setItem(13, getPlayerHead(name, name));
         invPerso.setItem(22, CommandMenu.getItem(Material.ARROW, "back to menu"));
-        invPerso.setItem(15, CommandMenu.getPlayerHead("Travail: " + infoPlayer.getTravail(), "cake"));
-        invPerso.setItem(16, CommandMenu.getPlayerHead("Money: " + infoPlayer.getMoney(), "cake"));
+        invPerso.setItem(15, getPlayerHead("Travail: " + infoPlayer.getTravail(), "cake"));
+        invPerso.setItem(16, getPlayerHead("Money: " + infoPlayer.getMoney(), "cake"));
         return invPerso;
     }
 
@@ -134,9 +219,9 @@ public class InvListener implements Listener {
                 player.openInventory(invItem);
             }
         }
-        if (event.getView().getTitle().substring(0, 6).equals("§5item")) {
+        if (event.getView().getTitle().startsWith("§5item")) {
             String item = event.getView().getTitle().substring(10);
-            if (current.getItemMeta().getDisplayName().equals("§abuy x64")){
+            if (Objects.requireNonNull(current.getItemMeta()).getDisplayName().equals("§abuy x64")){
                 CommandMarket.buyItem(item, 64, player);
                 Inventory invItem = itemActionGui(item);
                 player.closeInventory();
@@ -235,7 +320,7 @@ public class InvListener implements Listener {
         }
 
         if (event.getView().getTitle().equals("§5city")) {
-            if (current.getItemMeta().getDisplayName().equals(" ")) {
+            if (Objects.requireNonNull(current.getItemMeta()).getDisplayName().equals(" ")) {
                 event.setCancelled(true);
                 return;
 
@@ -245,37 +330,91 @@ public class InvListener implements Listener {
 
             } else {
                 player.closeInventory();
-                InfoCity infoCity = CommandCity.infoCity(current.getItemMeta().getDisplayName(), player);
-
-                Inventory invCity = Bukkit.createInventory(null, 27, "§4habitants");
-
-                invCity.setItem(11, CommandMenu.getPlayerHead("Nombre d'habitants: " + infoCity.getHabs_nb(), "cake"));
-                invCity.setItem(12, CommandMenu.getPlayerHead("Liste des habitants de " + current.getItemMeta().getDisplayName(), "cake"));
-                invCity.setItem(14, CommandMenu.getPlayerHead("Maire: " + infoCity.getMaire(), "king"));
-                invCity.setItem(15, CommandMenu.getPlayerHead("Niveau: " + infoCity.getLv(), "cake"));
-
-                player.openInventory(invCity);
+                String city = current.getItemMeta().getDisplayName();
+                openCityInfoGui(player, city);
             }
 
         } else if (event.getView().getTitle().equals("§4habitants")) {
-            player.closeInventory();
-            String city = replaceAll(current.getItemMeta().getDisplayName(), "Liste des habitants de ", "");
-            InfoCity infoCity = CommandCity.infoCity(city, player);
-            List<String> habsList = new ArrayList<>(Arrays.asList(infoCity.getHabs().split(" ")));
+            if (current.getItemMeta().getDisplayName().equals("retourner a la liste des villes")) {
+                player.closeInventory();
+                listCityGui(player);
 
-            Inventory invHabs = Bukkit.createInventory(null, 54, "§4ville");
+            } else {
 
-            for (int i = 1; i < habsList.size(); i++) {
-                invHabs.setItem(i-1, CommandMenu.getPlayerHead(habsList.get(i), habsList.get(i)));
+                try {
+                    String prefix = current.getItemMeta().getDisplayName().substring(0,23);
+                    if (prefix.equals("Liste des habitants de ")) {
+
+                        player.closeInventory();
+
+                        String city = replaceAll(Objects.requireNonNull(current.getItemMeta()).getDisplayName(), "Liste des habitants de ", "");
+                        InfoCity infoCity = CommandCity.getInfoCityAuto(city);
+                        player.sendMessage(infoCity.getHabs());
+                        assert infoCity != null;
+                        List<String> habsList = new ArrayList<>(Arrays.asList(infoCity.getHabs().split(" ")));
+
+                        Inventory invHabs = Bukkit.createInventory(null, 54, "§4ville");
+
+                        String color = "RED";
+
+                        roundGui(invHabs, color);
+
+                        for (int i = 1; i < habsList.size(); i++) {
+                            invHabs.setItem(i+9, getPlayerHead(habsList.get(i), habsList.get(i)));
+                        }
+
+                        invHabs.setItem(49, CommandMenu.getItem(Material.ARROW, "retourner a info de " + city));
+
+                        player.openInventory(invHabs);
+                    } else {
+                        event.setCancelled(true);
+                        return;
+                    }
+                } catch (Exception e) {
+                    event.setCancelled(true);
+                    return;
+                }
             }
 
-            player.openInventory(invHabs);
         } else if (event.getView().getTitle().equals("§4ville")) {
-            player.closeInventory();
+            try {
+                String prefix = current.getItemMeta().getDisplayName().substring(0,20);
+                String city = current.getItemMeta().getDisplayName().substring(20);
+                System.out.println(prefix +"_________"+city);
+                if (prefix.equals("retourner a info de ")) {
+                    player.closeInventory();
+                    openCityInfoGui(player, city);
 
-            UUID uuid = CommandMarket.getUUIDwithUsername(current.getItemMeta().getDisplayName());
-            player.openInventory(invPerso(uuid, current.getItemMeta().getDisplayName()));
+                }
+            } catch (Exception e) {
+                player.closeInventory();
+
+                UUID uuid = CommandMarket.getUUIDwithUsername(Objects.requireNonNull(current.getItemMeta()).getDisplayName());
+                player.openInventory(invPerso(uuid, current.getItemMeta().getDisplayName()));
+            }
         }
+    }
+
+    private void openCityInfoGui(Player player, String city) {
+        InfoCity infoCity = CommandCity.getInfoCityAuto(city);
+
+        Inventory invCity = Bukkit.createInventory(null, 27, "§4habitants");
+
+        assert infoCity != null;
+        String maire = infoCity.getMaire();
+        if (maire.equals("")) {
+            maire = "Pas de maire";
+        }
+
+
+        invCity.setItem(11, getPlayerHead("Nombre d'habitants: " + infoCity.getHabs_nb(), "cake"));
+        invCity.setItem(12, getPlayerHead("Liste des habitants de " + city, "cake"));
+        invCity.setItem(14, getPlayerHead("Maire: " + maire, "king"));
+        invCity.setItem(15, getPlayerHead("Niveau: " + infoCity.getLv(), "cake"));
+
+        invCity.setItem(22, CommandMenu.getItem(Material.ARROW, "retourner a la liste des villes"));
+
+        player.openInventory(invCity);
     }
 
     private Inventory roundGui(Inventory inv, String color) {

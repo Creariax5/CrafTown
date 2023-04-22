@@ -55,6 +55,33 @@ public class InfoPlayer {
         return money;
     }
 
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setGrade(String grade) {
+        this.grade = grade;
+    }
+
+    public void setVille(String ville) {
+        this.ville = ville;
+    }
+
+    public void setLv(int lv) {
+        this.lv = lv;
+    }
+
+    public void setTravail(String travail) {
+        this.travail = travail;
+    }
+
+    public void setMoney(float money) {
+        this.money = money;
+    }
 
     public static boolean playerJoinCity(Connection connection, String villeName, CommandSender sender) {
         try {

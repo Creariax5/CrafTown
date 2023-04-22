@@ -138,7 +138,7 @@ public class CommandMarket implements CommandExecutor {
             }
         }
         List<String> myList = main.getInfoMarketByType().get(type);
-        listInfoMarket = new ArrayList<InfoMarket>();
+        listInfoMarket = new ArrayList<>();
         for (String material : myList) {
             listInfoMarket.add(main.getInfoMarket().get(material));
         }
@@ -335,9 +335,9 @@ public class CommandMarket implements CommandExecutor {
             final Connection connection;
             try {
                 connection = db1Connection.getConnection();
-                InfoPlayer info_player = JoinListener.getPlayer(connection, uuid);
-                main.getInfoPlayer().put(uuid, info_player);
-                main.getUsernameToUUID().put(info_player.getUsername(), uuid);
+                InfoPlayer infoPlayer = JoinListener.getPlayer(connection, uuid);
+                main.getInfoPlayer().put(uuid, infoPlayer);
+                main.getUsernameToUUID().put(infoPlayer.getUsername(), uuid);
             } catch (SQLException e) {
                 e.printStackTrace();
             }

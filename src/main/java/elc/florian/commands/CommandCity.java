@@ -18,6 +18,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 public class CommandCity implements CommandExecutor {
     static Main main;
@@ -37,18 +38,19 @@ public class CommandCity implements CommandExecutor {
                 // return false;
             } else {
 
+                    Player player = (Player) sender;
                     if (Objects.equals(args[0], "add") || Objects.equals(args[0], "create")) {
                         createCity(args[1], sender);
 
                     } else if (Objects.equals(args[0], "join")) {
-                        joinCity(args[1], sender);
+                        joinCity(args[1], player);
 
                     } else if (Objects.equals(args[0], "leave")) {
-                        leaveCity(sender);
+                        leaveCity(player);
 
                     } else if (Objects.equals(args[0], "info")) {
                         String city = args[1];
-                        InfoCity infoCity = infoCity(city, sender);
+                        InfoCity infoCity = getInfoCityAuto(city);
 
                         if (isInCity(city, sender)) {
                             sender.sendMessage(ChatColor.BLUE + "Info de " + city + ":");
@@ -74,7 +76,7 @@ public class CommandCity implements CommandExecutor {
     }
 
 
-    public static InfoCity infoCity(String city, CommandSender sender) {
+    public static InfoCity getInfoCityAuto(String city) {
         if (main.getInfoPlayer().containsKey(city)) {
             final InfoCity infoCity = main.getInfoCity().get(city);
             return infoCity;
@@ -108,7 +110,6 @@ public class CommandCity implements CommandExecutor {
 
             } catch (SQLException e) {
                 e.printStackTrace();
-                sender.sendMessage(ChatColor.RED + "Database connection failed");
             }
         }
         return null;
@@ -195,17 +196,23 @@ public class CommandCity implements CommandExecutor {
         }
     }
 
-    private void joinCity(String cityName, CommandSender sender) {
+    public static void joinCity(String city, Player player) {
         final DbConnection db1Connection = main.getDbManager().getDb1Connection();
         try {
             final Connection connection = db1Connection.getConnection();
 
-            if (isInCity(cityName, sender)) {
-                if (InfoPlayer.playerJoinCity(connection, cityName, sender)) {
+            if (isInCity(city, player)) {
+                if (InfoPlayer.playerJoinCity(connection, city, player)) {
                     try {
+                        UUID uuid = player.getUniqueId();
+
+                        InfoPlayer infoPlayer1 = CommandMarket.getInfoPlayerAuto(uuid);
+                        infoPlayer1.setVille(city);
+                        main.getInfoPlayer().put(uuid, infoPlayer1);
+
                         final PreparedStatement preparedStatement1 = connection.prepareStatement("SELECT habs_nb, habs FROM city WHERE name = ?");
 
-                        preparedStatement1.setString(1, cityName);
+                        preparedStatement1.setString(1, city);
 
                         final ResultSet resultSet = preparedStatement1.executeQuery();
                         int habs_nb;
@@ -217,38 +224,53 @@ public class CommandCity implements CommandExecutor {
                             final PreparedStatement preparedStatement2 = connection.prepareStatement("UPDATE city SET habs_nb = ?, habs = ?, updated_at = ? WHERE name = ?");
                             final long time = System.currentTimeMillis();
 
-                            preparedStatement2.setInt(1, habs_nb + 1);
-                            preparedStatement2.setString(2, habs_name + " " + sender.getName());
+                            habs_nb = habs_nb + 1;
+                            habs_name = habs_name + " " + player.getName();
+
+                            preparedStatement2.setInt(1, habs_nb);
+                            preparedStatement2.setString(2, habs_name);
                             preparedStatement2.setTimestamp(3, new Timestamp(time));
-                            preparedStatement2.setString(4, cityName);
+                            preparedStatement2.setString(4, city);
 
                             preparedStatement2.executeUpdate();
+
+                            InfoCity infoCity1 = CommandCity.getInfoCityAuto(city);
+                            assert infoCity1 != null;
+                            InfoCity infoCity2 = new InfoCity(habs_nb, habs_name, infoCity1.getMaire(), infoCity1.getLv());
+
+                            main.getInfoCity().put(city, infoCity2);
                         } else {
-                            sender.sendMessage(ChatColor.RED + "ERROR ");
+                            player.sendMessage(ChatColor.RED + "ERROR ");
                         }
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
-                    sender.sendMessage(ChatColor.GREEN + "Vous avez rejoint " + cityName + " !");
+                    player.sendMessage(ChatColor.GREEN + "Vous avez rejoint " + city + " !");
                 }
 
 
             } else {
-                sender.sendMessage(ChatColor.RED + "La ville " + cityName + " n'existe pas");
+                player.sendMessage(ChatColor.RED + "La ville " + city + " n'existe pas");
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            sender.sendMessage(ChatColor.RED + "Database connection failed");
+            player.sendMessage(ChatColor.RED + "Database connection failed");
         }
     }
 
-    private void leaveCity(CommandSender sender) {
+    public static void leaveCity(Player player) {
         final DbConnection db1Connection = main.getDbManager().getDb1Connection();
         try {
             final Connection connection = db1Connection.getConnection();
 
-            String city = InfoPlayer.playerLeaveCity(connection, sender);
+            String city = InfoPlayer.playerLeaveCity(connection, player);
             if (city != null) {
+                UUID uuid = player.getUniqueId();
+
+                InfoPlayer infoPlayer1 = CommandMarket.getInfoPlayerAuto(uuid);
+                infoPlayer1.setVille("rural");
+                main.getInfoPlayer().put(uuid, infoPlayer1);
+
                 try {
                     final PreparedStatement preparedStatement1 = connection.prepareStatement("SELECT habs_nb, habs, maire FROM city WHERE name = ?");
 
@@ -263,20 +285,22 @@ public class CommandCity implements CommandExecutor {
                         habs_name = resultSet.getString(2);
                         maire = resultSet.getString(3);
 
-                        if (habs_name.contains(sender.getName() + " ")) {
-                            habs_name = habs_name.replaceAll(sender.getName() + " ", "");
+                        if (habs_name.contains(player.getName() + " ")) {
+                            habs_name = habs_name.replaceAll(player.getName() + " ", "");
                         } else {
-                            habs_name = habs_name.replaceAll(sender.getName(), "");
+                            habs_name = habs_name.replaceAll(player.getName(), "");
                         }
 
-                        if (maire.contains(sender.getName())) {
+                        if (maire.contains(player.getName())) {
                             maire = "";
                         }
 
                         final PreparedStatement preparedStatement2 = connection.prepareStatement("UPDATE city SET habs_nb = ?, habs = ?, maire = ?, updated_at = ? WHERE name = ?");
                         final long time = System.currentTimeMillis();
 
-                        preparedStatement2.setInt(1, habs_nb - 1);
+                        habs_nb = habs_nb - 1;
+
+                        preparedStatement2.setInt(1, habs_nb);
                         preparedStatement2.setString(2, habs_name);
                         preparedStatement2.setString(3, maire);
                         preparedStatement2.setTimestamp(4, new Timestamp(time));
@@ -284,9 +308,14 @@ public class CommandCity implements CommandExecutor {
                         preparedStatement2.setString(5, city);
 
                         preparedStatement2.executeUpdate();
-                        sender.sendMessage(ChatColor.GREEN + "Vous avez quitté " + city);
+
+                        InfoCity infoCity1 = CommandCity.getInfoCityAuto(city);;
+                        InfoCity infoCity2 = new InfoCity(habs_nb, habs_name, infoCity1.getMaire(), infoCity1.getLv());
+                        main.getInfoCity().put(city, infoCity2);
+
+                        player.sendMessage(ChatColor.GREEN + "Vous avez quitté " + city);
                     } else {
-                        sender.sendMessage(ChatColor.RED + "db ERROR ");
+                        player.sendMessage(ChatColor.RED + "db ERROR ");
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -294,7 +323,7 @@ public class CommandCity implements CommandExecutor {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            sender.sendMessage(ChatColor.RED + "Database connection failed");
+            player.sendMessage(ChatColor.RED + "Database connection failed");
         }
     }
 
