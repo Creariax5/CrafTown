@@ -205,16 +205,24 @@ public class CommandMarket implements CommandExecutor {
 
         InfoPlayer infoPlayer = getInfoPlayerAuto(uuid);
         InfoMarket infoMarket = getInfoMarketByName(item);
-        float toPay = (infoMarket.getPrice() * amount);
+
+        float toPay = 0;
         float money = infoPlayer.getMoney();
         int product = infoMarket.getProduct();
         float coin = infoMarket.getCoin();
 
+        for (int i = 0; i < amount; i++) {
+            toPay = coin / product;
+            product = product - 1;
+            coin = coin + toPay;
+        }
+
+        toPay = coin / product;
+        toPay = toPay * amount;
+
         if (money >= toPay) {
             if (amount <= product) {
                 money = money - toPay;
-                product = product - amount;
-                coin = coin + toPay;
                 float price = coin / product;
 
                 InfoPlayer infoPlayer1 = new InfoPlayer(player.getUniqueId(), infoPlayer.getUsername(), infoPlayer.getGrade(), infoPlayer.getVille(), infoPlayer.getLv(), infoPlayer.getTravail(), money);
@@ -269,16 +277,23 @@ public class CommandMarket implements CommandExecutor {
 
         InfoPlayer infoPlayer = getInfoPlayerAuto(uuid);
         InfoMarket infoMarket = getInfoMarketByName(item);
-        float toPay = (infoMarket.getPrice() * amount);
+        float toPay = 0;
         float money = infoPlayer.getMoney();
         int product = infoMarket.getProduct();
         float coin = infoMarket.getCoin();
 
+        for (int i = 0; i < amount; i++) {
+            toPay = coin / product;
+            product = product + 1;
+            coin = coin - toPay;
+        }
+
+        toPay = coin / product;
+        toPay = toPay * amount;
+
         if (player.getInventory().contains(Material.valueOf(item), amount)) {
             if (coin >= toPay) {
                 money = money + toPay;
-                product = product + amount;
-                coin = coin - toPay;
                 float price = coin / product;
 
                 InfoPlayer infoPlayer1 = new InfoPlayer(player.getUniqueId(), infoPlayer.getUsername(), infoPlayer.getGrade(), infoPlayer.getVille(), infoPlayer.getLv(), infoPlayer.getTravail(), money);

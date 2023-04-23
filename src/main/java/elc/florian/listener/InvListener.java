@@ -17,8 +17,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
-import static elc.florian.commands.CommandMenu.getItem;
-import static elc.florian.commands.CommandMenu.getPlayerHead;
+import static elc.florian.commands.CommandMenu.*;
 import static org.apache.commons.lang3.RegExUtils.replaceAll;
 
 public class InvListener implements Listener {
@@ -54,7 +53,8 @@ public class InvListener implements Listener {
                 return;
             }
         } else if (event.getView().getTitle().equals("§5gerer ma ville")) {
-            String[] prefix = Objects.requireNonNull(current.getItemMeta()).getDisplayName().split(" ");
+            String item = Objects.requireNonNull(current.getItemMeta()).getDisplayName();
+            String[] prefix = item.split(" ");
             if (prefix[0].equals("Quitter")) {
                 player.closeInventory();
                 CommandCity.leaveCity(player);
@@ -63,6 +63,12 @@ public class InvListener implements Listener {
 
             } else if (prefix[0].equals("Rejoindre")) {
                 cityToJoinGui(player);
+            } else if ((prefix[0] + " " + prefix[1]).equals("Ma ville:")) {
+                player.closeInventory();
+                openCityInfoGui(player, prefix[2]);
+            } else if (item.equals("retourner a mon profile")) {
+                player.closeInventory();
+                player.openInventory(invPerso(player));
             } else {
                 event.setCancelled(true);
                 return;
@@ -111,11 +117,15 @@ public class InvListener implements Listener {
         if (city.equals("rural")) {
             inv.setItem(13, getItem(Material.LIME_CONCRETE, "Rejoindre une ville"));
 
+            inv.setItem(22, CommandMenu.getItem(Material.ARROW, "retourner a mon profile"));
+
         } else {
 
             inv.setItem(11, getItem(Material.RED_CONCRETE, "Quitter " + city));
             inv.setItem(13, getPlayerHead("Ma ville: " + city, "cake"));
             inv.setItem(15, getPlayerHead("§6ma reputation a " + city, player.getName()));
+
+            inv.setItem(22, CommandMenu.getItem(Material.ARROW, "retourner a mon profile"));
         }
 
 
@@ -143,7 +153,7 @@ public class InvListener implements Listener {
             } else if (current.getItemMeta().getDisplayName().equals("§6mes information")) {
                 player.closeInventory();
 
-                player.openInventory(invPerso(player.getUniqueId(), player.getDisplayName()));
+                player.openInventory(invPerso(player));
             }
         }
     }
@@ -159,8 +169,14 @@ public class InvListener implements Listener {
 
         roundGui(invCity, color);
 
+        String[] url = {"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMmRjYmJhNmM3NTFkYWI1ZjJiMzA5YmM1OTQxZThlYTc5ODc3Y2NlNDI1NjkzNmExODk4MTFlZDdlYzM2ZDI1YyJ9fX0=",
+                "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWY2YmIzYWQ4ZGFmMGMxNDk5YjVlNDZkY2Y0MTc2YzgzNDU0MzU1M2ExYTgxODAwOWU3Njc1ZTg5NjI5NWUxYSJ9fX0=",
+                "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjg1NDA2MGFhNTc3NmI3MzY2OGM4OTg2NTkwOWQxMmQwNjIyNDgzZTYwMGI2NDZmOTBjMTg2YzY1Yjc1ZmY0NSJ9fX0=",
+                "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2I1NmU0OTA4NWY1NWQ1ZGUyMTVhZmQyNmZjNGYxYWZlOWMzNDMxM2VmZjk4ZTNlNTgyNDVkZWYwNmU1ODU4YyJ9fX0="};
+
         for (int i = 10; i < cityList.size() + 10; i++) {
-            invCity.setItem(i, getPlayerHead(cityList.get(i - 10), "cake"));
+            int rnd = (int) (Math.random() * 4);
+            invCity.setItem(i, getSkull(url[rnd], cityList.get(i - 10)));
         }
 
         invCity.setItem(49, CommandMenu.getItem(Material.ARROW, "back to menu"));
@@ -168,7 +184,10 @@ public class InvListener implements Listener {
         player.openInventory(invCity);
     }
 
-    private Inventory invPerso(UUID uuid, String name) {
+    private Inventory invPerso(Player player) {
+        UUID uuid = player.getUniqueId();
+        String name = player.getName();
+
         InfoPlayer infoPlayer = CommandMarket.getInfoPlayerAuto(uuid);
 
         Inventory invPerso = Bukkit.createInventory(null, 27, "§4info perso");
@@ -265,13 +284,12 @@ public class InvListener implements Listener {
         Inventory inv = Bukkit.createInventory(null, 36, "§5item -> " + name);
         int product = infoMarket.getProduct();
         float coin = infoMarket.getCoin();
-        float price = coin / product;
 
-        inv.setItem(10, CommandMenu.getBuyGui("LIME_CONCRETE", "§abuy x64", 64, price));
-        inv.setItem(11, CommandMenu.getBuyGui("LIME_CONCRETE_POWDER", "§abuy x1", 1, price));
+        inv.setItem(10, CommandMenu.getBuyGui("LIME_CONCRETE", "§abuy x64", 64, product, coin));
+        inv.setItem(11, CommandMenu.getBuyGui("LIME_CONCRETE_POWDER", "§abuy x1", 1, product, coin));
         inv.setItem(13, CommandMenu.getAdvancedItem(infoMarket.getMaterial(), product, coin, infoMarket.getTaxe()));
-        inv.setItem(15, CommandMenu.getSellGui("RED_CONCRETE_POWDER", "§csell x1", 1, price));
-        inv.setItem(16, CommandMenu.getSellGui("RED_CONCRETE", "§csell x64", 64, price));
+        inv.setItem(15, CommandMenu.getSellGui("RED_CONCRETE_POWDER", "§csell x1", 1, product, coin));
+        inv.setItem(16, CommandMenu.getSellGui("RED_CONCRETE", "§csell x64", 64, product, coin));
         inv.setItem(31, CommandMenu.getItem(Material.ARROW, "back"));
 
         return inv;
@@ -390,7 +408,8 @@ public class InvListener implements Listener {
                 player.closeInventory();
 
                 UUID uuid = CommandMarket.getUUIDwithUsername(Objects.requireNonNull(current.getItemMeta()).getDisplayName());
-                player.openInventory(invPerso(uuid, current.getItemMeta().getDisplayName()));
+
+                player.openInventory(invPerso(player));
             }
         }
     }

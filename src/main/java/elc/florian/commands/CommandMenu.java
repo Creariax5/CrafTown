@@ -1,5 +1,7 @@
 package elc.florian.commands;
 
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -12,9 +14,12 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
+import java.lang.reflect.Field;
+import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 public class CommandMenu implements CommandExecutor {
     @Override
@@ -25,11 +30,12 @@ public class CommandMenu implements CommandExecutor {
     }
 
     public static void openMenu(Player player) {
+        String shopURL = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjFiZjZhODM4NjYxZTE1ZGY2NjE5OTA5NDE2NWI3NTM4MzJjNzIzNDcxZDJiMjA0ZDRkNTA3NGFhNjA4Yzc4NCJ9fX0=";
 
         Inventory inv = Bukkit.createInventory(null, 27, "§5menu");
 
         inv.setItem(11, getPlayerHead("§6city", "Dipicrylamine"));
-        inv.setItem(13, getPlayerHead("§6market", "HotdogParmesan"));
+        inv.setItem(13, getSkull(shopURL, "§6market"));
         inv.setItem(15, getPlayerHead("§6mes information", player.getName()));
 
         player.openInventory(inv);
@@ -68,22 +74,66 @@ public class CommandMenu implements CommandExecutor {
         return itemStack;
     }
 
-    public static ItemStack getBuyGui(String material, String name, int amount, float price) {
+    public static ItemStack getSkull(String url, String displayName) {
+        ItemStack head = new ItemStack(Material.PLAYER_HEAD);
+        if (url.isEmpty()) {
+            return head;
+        }
+
+        SkullMeta headMeta = (SkullMeta) head.getItemMeta();
+        GameProfile profile = new GameProfile(UUID.randomUUID(), null);
+        profile.getProperties().put("textures", new Property("textures", url));
+        Field profileField;
+        try {
+            profileField = headMeta.getClass().getDeclaredField("profile");
+            profileField.setAccessible(true);
+            profileField.set(headMeta, profile);
+        } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException ignored) {
+
+        }
+        head.setItemMeta(headMeta);
+
+        ItemMeta itemStackM = head.getItemMeta();
+        itemStackM.setDisplayName(displayName);
+        head.setItemMeta(itemStackM);
+        return head;
+    }
+
+
+    public static ItemStack getBuyGui(String material, String name, int amount, float product, float coin) {
+        DecimalFormat df = new DecimalFormat("0.00");
         ItemStack itemStack = new ItemStack(Objects.requireNonNull(Material.matchMaterial(material)));
         ItemMeta itemStackM = itemStack.getItemMeta();
         assert itemStackM != null;
         itemStackM.setDisplayName(name);
-        itemStackM.setLore(List.of("§7buy for: §6" + price * amount + " coins"));
+        float price;
+        for (int i = 0; i < amount; i++) {
+            price = coin / product;
+            product = product - 1;
+            coin = coin + price;
+        }
+        price = coin / product;
+
+        itemStackM.setLore(List.of("§7buy for: §6" + df.format(price * amount) + " coins"));
         itemStack.setItemMeta(itemStackM);
         return itemStack;
     }
 
-    public static ItemStack getSellGui(String material, String name, int amount, float price) {
+    public static ItemStack getSellGui(String material, String name, int amount, float product, float coin) {
+        DecimalFormat df = new DecimalFormat("0.00");
         ItemStack itemStack = new ItemStack(Objects.requireNonNull(Material.matchMaterial(material)));
         ItemMeta itemStackM = itemStack.getItemMeta();
         assert itemStackM != null;
         itemStackM.setDisplayName(name);
-        itemStackM.setLore(List.of("§7sell for: §6" + price * amount + " coins"));
+        float price;
+        for (int i = 0; i < amount; i++) {
+            price = coin / product;
+            product = product + 1;
+            coin = coin - price;
+        }
+        price = coin / product;
+
+        itemStackM.setLore(List.of("§7sell for: §6" + df.format(price * amount) + " coins"));
         itemStack.setItemMeta(itemStackM);
         return itemStack;
     }
