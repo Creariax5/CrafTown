@@ -32,7 +32,7 @@ public class CommandCity implements CommandExecutor {
         Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
             if (args.length == 0) {
                 List<String> cityList = new ArrayList<>();
-                getCity(cityList);
+                cityList = getCity(cityList);
 
                 sender.sendMessage(ChatColor.BLUE + "Voici la liste des villes du pays: " + ChatColor.GOLD + cityList);
                 // return false;
@@ -87,7 +87,7 @@ public class CommandCity implements CommandExecutor {
 
                 final PreparedStatement preparedStatement1;
 
-                preparedStatement1 = connection.prepareStatement("SELECT habs_nb, habs, maire, lv FROM city WHERE name = ?");
+                preparedStatement1 = connection.prepareStatement("SELECT habs_nb, habs, maire, lv, spawn_world, spawn_x, spawn_y, spawn_z, spawn_yaw, spawn_pitch FROM city WHERE name = ?");
 
                 preparedStatement1.setString(1, city);
 
@@ -96,14 +96,28 @@ public class CommandCity implements CommandExecutor {
                 String habs_name = null;
                 String maire = null;
                 int lv = 0;
+
+                String spawn_world = "0";
+                double spawn_x = 0;
+                double spawn_y = 0;
+                double spawn_z = 0;
+                float spawn_yaw = 0;
+                float spawn_pitch = 0;
                 if (resultSet.next()) {
                     habs_nb = resultSet.getInt(1);
                     habs_name = resultSet.getString(2);
                     maire = resultSet.getString(3);
                     lv = resultSet.getInt(4);
+
+                    spawn_world = resultSet.getString(5);
+                    spawn_x = resultSet.getDouble(6);
+                    spawn_y = resultSet.getDouble(7);
+                    spawn_z = resultSet.getDouble(8);
+                    spawn_yaw = resultSet.getFloat(9);
+                    spawn_pitch = resultSet.getFloat(10);
                 }
 
-                InfoCity infoCity = new InfoCity(habs_nb, habs_name, maire, lv);
+                InfoCity infoCity = new InfoCity(habs_nb, habs_name, maire, lv, spawn_world, spawn_x, spawn_y, spawn_z, spawn_yaw, spawn_pitch);
 
                 main.getInfoCity().put(city, infoCity);
                 return infoCity;
@@ -236,9 +250,11 @@ public class CommandCity implements CommandExecutor {
 
                             InfoCity infoCity1 = CommandCity.getInfoCityAuto(city);
                             assert infoCity1 != null;
-                            InfoCity infoCity2 = new InfoCity(habs_nb, habs_name, infoCity1.getMaire(), infoCity1.getLv());
+                            infoCity1.setHabs(habs_name);
+                            infoCity1.setHabs_nb(habs_nb);
 
-                            main.getInfoCity().put(city, infoCity2);
+                            main.getInfoCity().put(city, infoCity1);
+                            spawnCity(city, player);
                         } else {
                             player.sendMessage(ChatColor.RED + "ERROR ");
                         }
@@ -310,8 +326,10 @@ public class CommandCity implements CommandExecutor {
                         preparedStatement2.executeUpdate();
 
                         InfoCity infoCity1 = CommandCity.getInfoCityAuto(city);;
-                        InfoCity infoCity2 = new InfoCity(habs_nb, habs_name, infoCity1.getMaire(), infoCity1.getLv());
-                        main.getInfoCity().put(city, infoCity2);
+                        assert infoCity1 != null;
+                        infoCity1.setHabs_nb(habs_nb);
+                        infoCity1.setHabs(habs_name);
+                        main.getInfoCity().put(city, infoCity1);
 
                         player.sendMessage(ChatColor.GREEN + "Vous avez quitté " + city);
                     } else {
@@ -329,7 +347,7 @@ public class CommandCity implements CommandExecutor {
 
     private static boolean isInCity(String city, CommandSender sender){
         List<String> cityList = new ArrayList<>();
-        getCity(cityList);
+        cityList = getCity(cityList);
 
         if (cityList.contains(city)) {
             return true;
@@ -341,65 +359,53 @@ public class CommandCity implements CommandExecutor {
     }
 
     public static List<String> getCity(List<String> cityList) {
-        final DbConnection db1Connection = main.getDbManager().getDb1Connection();
         try {
-            final Connection connection = db1Connection.getConnection();
-            final PreparedStatement preparedStatement = connection.prepareStatement("SELECT name FROM city");
+            String test = main.getCityList().get(0);
+            cityList = main.getCityList();
 
-            final ResultSet resultSet = preparedStatement.executeQuery();
+            return cityList;
+        } catch (Exception error){
 
-            while (resultSet.next()) {
-                cityList.add(resultSet.getString(1));
+            final DbConnection db1Connection = main.getDbManager().getDb1Connection();
+            try {
+                final Connection connection = db1Connection.getConnection();
+                final PreparedStatement preparedStatement = connection.prepareStatement("SELECT name FROM city");
+
+                final ResultSet resultSet = preparedStatement.executeQuery();
+
+                while (resultSet.next()) {
+                    cityList.add(resultSet.getString(1));
+                }
+                main.setCityList(cityList);
+                return cityList;
+
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-        return cityList;
+        System.out.println("error !!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        return null;
     }
 
-    public static void spawnCity( String cityName, CommandSender sender) {
-        final DbConnection db1Connection = main.getDbManager().getDb1Connection();
-        try {
-            final Connection connection = db1Connection.getConnection();
+    public static void spawnCity(String cityName, CommandSender sender) {
+        if (isInCity(cityName, sender)) {
+            sender.sendMessage(ChatColor.LIGHT_PURPLE + "Debut de la teleportation ...");
 
-            if (isInCity(cityName, sender)) {
-                sender.sendMessage(ChatColor.LIGHT_PURPLE + "Debut de la teleportation ...");
-                try {
-                    final PreparedStatement preparedStatement1 = connection.prepareStatement("SELECT spawn_world, spawn_x, spawn_y, spawn_z, spawn_yaw, spawn_pitch FROM city WHERE name = ?");
-                    preparedStatement1.setString(1, cityName);
+            InfoCity infoCity = getInfoCityAuto(cityName);
 
-                    final ResultSet resultSet = preparedStatement1.executeQuery();
-                    String spawn_world = "0";
-                    double spawn_x = 0;
-                    double spawn_y = 0;
-                    double spawn_z = 0;
-                    float spawn_yaw = 0;
-                    float spawn_pitch = 0;
+            assert infoCity != null;
+            String spawn_world = infoCity.getSpawn_world();
+            double spawn_x = infoCity.getSpawn_x();
+            double spawn_y = infoCity.getSpawn_y();
+            double spawn_z = infoCity.getSpawn_z();
+            float spawn_yaw = infoCity.getSpawn_yaw();
+            float spawn_pitch = infoCity.getSpawn_pitch();
 
-                    if (resultSet.next()) {
-                        spawn_world = resultSet.getString(1);
-                        spawn_x = resultSet.getDouble(2);
-                        spawn_y = resultSet.getDouble(3);
-                        spawn_z = resultSet.getDouble(4);
-                        spawn_yaw = resultSet.getFloat(5);
-                        spawn_pitch = resultSet.getFloat(6);
-                    }
-
-                    Player player = (Player) sender;
-                    World world = Bukkit.getWorld(spawn_world);
-                    final Location location = new Location(world, spawn_x, spawn_y, spawn_z, spawn_yaw, spawn_pitch);
-                    player.teleport(location);
-                    sender.sendMessage(ChatColor.LIGHT_PURPLE + "... le voyage est terminé");
-
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                    sender.sendMessage(ChatColor.RED + "ERROR");
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            sender.sendMessage(ChatColor.RED + "Database connection failed");
+            Player player = (Player) sender;
+            World world = Bukkit.getWorld(spawn_world);
+            final Location location = new Location(world, spawn_x, spawn_y, spawn_z, spawn_yaw, spawn_pitch);
+            player.teleport(location);
+            sender.sendMessage(ChatColor.LIGHT_PURPLE + "... le voyage est terminé");
         }
     }
 

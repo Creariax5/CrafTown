@@ -23,6 +23,11 @@ import static org.apache.commons.lang3.RegExUtils.replaceAll;
 public class InvListener implements Listener {
     @EventHandler
     public void onClick(InventoryClickEvent event) {
+        ItemStack current = event.getCurrentItem();
+        if (current == null) {
+            return;
+        }
+
         menuGui(event);
         cityGui(event);
         marcketGui(event);
@@ -97,7 +102,7 @@ public class InvListener implements Listener {
         player.closeInventory();
 
         List<String> cityList = new ArrayList<>();
-        CommandCity.getCity(cityList);
+        cityList = CommandCity.getCity(cityList);
         Inventory invCity = Bukkit.createInventory(null, 54, "§5Choisir une ville a rejoindre");
         String color = "GREEN";
         roundGui(invCity, color);
@@ -136,10 +141,6 @@ public class InvListener implements Listener {
         Player player = (Player) event.getWhoClicked();
         ItemStack current = event.getCurrentItem();
 
-        if (current == null) {
-            return;
-        }
-
         if (event.getView().getTitle().equals("§5menu")) {
             if (Objects.requireNonNull(current.getItemMeta()).getDisplayName().equals("§6city")) {
                 listCityGui(player);
@@ -162,7 +163,7 @@ public class InvListener implements Listener {
         player.closeInventory();
         List<String> cityList = new ArrayList<>();
 
-        CommandCity.getCity(cityList);
+        cityList = CommandCity.getCity(cityList);
         Inventory invCity = Bukkit.createInventory(null, 54, "§5city");
 
         String color = "GREEN";
@@ -333,11 +334,8 @@ public class InvListener implements Listener {
         Player player = (Player) event.getWhoClicked();
         ItemStack current = event.getCurrentItem();
 
-        if (current == null) {
-            return;
-        }
-
         if (event.getView().getTitle().equals("§5city")) {
+            assert current != null;
             if (Objects.requireNonNull(current.getItemMeta()).getDisplayName().equals(" ")) {
                 event.setCancelled(true);
                 return;
@@ -353,7 +351,8 @@ public class InvListener implements Listener {
             }
 
         } else if (event.getView().getTitle().equals("§4habitants")) {
-            if (current.getItemMeta().getDisplayName().equals("retourner a la liste des villes")) {
+            assert current != null;
+            if (Objects.requireNonNull(current.getItemMeta()).getDisplayName().equals("retourner a la liste des villes")) {
                 player.closeInventory();
                 listCityGui(player);
 
@@ -367,8 +366,8 @@ public class InvListener implements Listener {
 
                         String city = replaceAll(Objects.requireNonNull(current.getItemMeta()).getDisplayName(), "Liste des habitants de ", "");
                         InfoCity infoCity = CommandCity.getInfoCityAuto(city);
-                        player.sendMessage(infoCity.getHabs());
                         assert infoCity != null;
+                        player.sendMessage(infoCity.getHabs());
                         List<String> habsList = new ArrayList<>(Arrays.asList(infoCity.getHabs().split(" ")));
 
                         Inventory invHabs = Bukkit.createInventory(null, 54, "§4ville");
@@ -396,7 +395,8 @@ public class InvListener implements Listener {
 
         } else if (event.getView().getTitle().equals("§4ville")) {
             try {
-                String prefix = current.getItemMeta().getDisplayName().substring(0,20);
+                assert current != null;
+                String prefix = Objects.requireNonNull(current.getItemMeta()).getDisplayName().substring(0,20);
                 String city = current.getItemMeta().getDisplayName().substring(20);
                 System.out.println(prefix +"_________"+city);
                 if (prefix.equals("retourner a info de ")) {

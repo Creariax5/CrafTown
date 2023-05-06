@@ -5,11 +5,13 @@ import elc.florian.db.DbManager;
 import elc.florian.listener.ChatListener;
 import elc.florian.listener.InvListener;
 import elc.florian.listener.JoinListener;
+import elc.florian.listener.MoveListener;
 import elc.florian.other.InfoCity;
 import elc.florian.other.InfoMarket;
 import elc.florian.other.InfoPlayer;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -23,6 +25,7 @@ public class Main extends JavaPlugin {
     private HashMap<String, InfoCity> infoCity;
     private HashMap<String, InfoMarket> infoMarket;
     private HashMap<String, List<String>> infoMarketByType;
+    private List<String> cityList;
 
     @Override
     public void onEnable() {
@@ -33,6 +36,7 @@ public class Main extends JavaPlugin {
         infoCity = new HashMap<>();
         infoMarket  = new HashMap<>();
         infoMarketByType  = new HashMap<>();
+        cityList = new ArrayList<>();
         System.out.println("CraftTown started !");
 
         getCommand("alert").setExecutor(new CommandAlert());
@@ -44,6 +48,7 @@ public class Main extends JavaPlugin {
         getCommand("bridge").setExecutor(new CommandAutoBridge());
         this.getServer().getPluginManager().registerEvents(new JoinListener(this), this);
         this.getServer().getPluginManager().registerEvents(new ChatListener(this), this);
+        this.getServer().getPluginManager().registerEvents(new MoveListener(this), this);
         this.getServer().getPluginManager().registerEvents(new InvListener(), this);
     }
 
@@ -71,5 +76,13 @@ public class Main extends JavaPlugin {
     }
     public HashMap<String, List<String>> getInfoMarketByType() {
         return infoMarketByType;
+    }
+
+    public List<String> getCityList() {
+        return cityList;
+    }
+
+    public void setCityList(List<String> cityList) {
+        this.cityList = cityList;
     }
 }
