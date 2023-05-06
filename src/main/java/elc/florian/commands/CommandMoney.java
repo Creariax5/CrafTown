@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.UUID;
 
 public class CommandMoney implements CommandExecutor {
@@ -31,10 +32,11 @@ public class CommandMoney implements CommandExecutor {
 
 
             if (args.length == 0) {
+                DecimalFormat df = new DecimalFormat("0.00");
                 if (main.getInfoPlayer().containsKey(uuid)) {
 
                     final InfoPlayer infoPlayer = main.getInfoPlayer().get(uuid);
-                    sender.sendMessage(ChatColor.DARK_GREEN + "Vous avez " + infoPlayer.getMoney() + " sur votre compte");
+                    sender.sendMessage(ChatColor.DARK_GREEN + "Vous avez " + df.format(infoPlayer.getMoney()) + " sur votre compte");
                 } else {
                     final DbConnection db1Connection = main.getDbManager().getDb1Connection();
 
@@ -49,7 +51,7 @@ public class CommandMoney implements CommandExecutor {
                     }
 
                     final InfoPlayer infoPlayer = main.getInfoPlayer().get(uuid);
-                    sender.sendMessage(ChatColor.DARK_GREEN + "Vous avez " + infoPlayer.getMoney() + " sur votre compte");
+                    sender.sendMessage(ChatColor.DARK_GREEN + "Vous avez " + df.format(infoPlayer.getMoney()) + " sur votre compte");
                 }
 
 

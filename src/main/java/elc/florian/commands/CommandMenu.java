@@ -57,7 +57,8 @@ public class CommandMenu implements CommandExecutor {
         assert itemStackM != null;
         itemStackM.setDisplayName("§b" + material);
         float price = coin / product;
-        itemStackM.setLore(Arrays.asList("§8" + product + " units", "", "§7buy: §6" + price + " coins", "§7sell: §6" + price + " coins", "", "§eClic to view product"));
+        DecimalFormat df = new DecimalFormat("0.00");
+        itemStackM.setLore(Arrays.asList("§8" + product + " units", "", "§7buy: §6" + df.format(price) + " coins", "§7sell: §6" + df.format(price) + " coins", "", "§eClic to view product"));
         itemStack.setItemMeta(itemStackM);
         return itemStack;
     }
@@ -107,14 +108,19 @@ public class CommandMenu implements CommandExecutor {
         assert itemStackM != null;
         itemStackM.setDisplayName(name);
         float price;
+        float c1 = coin;
+
         for (int i = 0; i < amount; i++) {
             price = coin / product;
             product = product - 1;
             coin = coin + price;
         }
         price = coin / product;
+        coin = coin + price/2;
 
-        itemStackM.setLore(List.of("§7buy for: §6" + df.format(price * amount) + " coins"));
+        price = coin-c1;
+
+        itemStackM.setLore(List.of("§7buy for: §6" + df.format(price) + " coins"));
         itemStack.setItemMeta(itemStackM);
         return itemStack;
     }
@@ -126,14 +132,17 @@ public class CommandMenu implements CommandExecutor {
         assert itemStackM != null;
         itemStackM.setDisplayName(name);
         float price;
+        float c1 = coin;
         for (int i = 0; i < amount; i++) {
             price = coin / product;
             product = product + 1;
             coin = coin - price;
         }
         price = coin / product;
+        coin = coin + price/2;
+        price = -(coin-c1);
 
-        itemStackM.setLore(List.of("§7sell for: §6" + df.format(price * amount) + " coins"));
+        itemStackM.setLore(List.of("§7sell for: §6" + df.format(price) + " coins"));
         itemStack.setItemMeta(itemStackM);
         return itemStack;
     }

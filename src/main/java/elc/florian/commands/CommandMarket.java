@@ -17,6 +17,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.sql.*;
+import java.text.DecimalFormat;
 import java.util.*;
 
 public class CommandMarket implements CommandExecutor {
@@ -206,30 +207,31 @@ public class CommandMarket implements CommandExecutor {
         InfoPlayer infoPlayer = getInfoPlayerAuto(uuid);
         InfoMarket infoMarket = getInfoMarketByName(item);
 
-        float toPay = 0;
+        float toPay;
         float money = infoPlayer.getMoney();
         int product = infoMarket.getProduct();
         float coin = infoMarket.getCoin();
+        float c1 = coin;
 
         for (int i = 0; i < amount; i++) {
             toPay = coin / product;
             product = product - 1;
             coin = coin + toPay;
         }
-
         toPay = coin / product;
-        toPay = toPay * amount;
+        coin = coin + toPay/2;
+
+        toPay = coin-c1;
 
         if (money >= toPay) {
-            if (amount <= product) {
+            if (0 <= product) {
                 money = money - toPay;
-                float price = coin / product;
 
                 InfoPlayer infoPlayer1 = new InfoPlayer(player.getUniqueId(), infoPlayer.getUsername(), infoPlayer.getGrade(), infoPlayer.getVille(), infoPlayer.getLv(), infoPlayer.getTravail(), money);
                 main.getInfoPlayer().put(player.getUniqueId(), infoPlayer1);
                 main.getUsernameToUUID().put(infoPlayer1.getUsername(), uuid);
 
-                InfoMarket infoMarket1 = new InfoMarket(item, infoMarket.getType(), price, infoMarket.getTaxe(), product, coin);
+                InfoMarket infoMarket1 = new InfoMarket(item, infoMarket.getType(), toPay, infoMarket.getTaxe(), product, coin);
                 main.getInfoMarket().put(item, infoMarket1);
 
                 final DbConnection db1Connection = main.getDbManager().getDb1Connection();
@@ -239,7 +241,7 @@ public class CommandMarket implements CommandExecutor {
                     final PreparedStatement preparedStatement2 = connection.prepareStatement("UPDATE market SET price = ?, product = ?, coin = ?, updated_at = ? WHERE material = ?");
                     final long time = System.currentTimeMillis();
 
-                    preparedStatement2.setFloat(1, price);
+                    preparedStatement2.setFloat(1, toPay);
                     preparedStatement2.setInt(2, product);
                     preparedStatement2.setFloat(3, coin);
                     preparedStatement2.setTimestamp(4, new Timestamp(time));
@@ -258,7 +260,8 @@ public class CommandMarket implements CommandExecutor {
 
                     player.getInventory().addItem(new ItemStack(Objects.requireNonNull(Material.matchMaterial(item)), amount));
                     player.updateInventory();
-                    player.sendMessage(ChatColor.GREEN + "Achat effectué " + amount + " " + item + " acheté pour " + toPay + " coins");
+                    DecimalFormat df = new DecimalFormat("0.00");
+                    player.sendMessage(ChatColor.GREEN + "Achat effectué " + amount + " " + item + " acheté pour " + df.format(toPay) + " coins");
 
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -277,30 +280,31 @@ public class CommandMarket implements CommandExecutor {
 
         InfoPlayer infoPlayer = getInfoPlayerAuto(uuid);
         InfoMarket infoMarket = getInfoMarketByName(item);
-        float toPay = 0;
+        float toPay;
         float money = infoPlayer.getMoney();
         int product = infoMarket.getProduct();
         float coin = infoMarket.getCoin();
+        float c1 = coin;
 
         for (int i = 0; i < amount; i++) {
             toPay = coin / product;
             product = product + 1;
             coin = coin - toPay;
         }
-
         toPay = coin / product;
-        toPay = toPay * amount;
+        coin = coin + toPay/2;
+
+        toPay = -(coin-c1);
 
         if (player.getInventory().contains(Material.valueOf(item), amount)) {
-            if (coin >= toPay) {
+            if (coin >= 0) {
                 money = money + toPay;
-                float price = coin / product;
 
                 InfoPlayer infoPlayer1 = new InfoPlayer(player.getUniqueId(), infoPlayer.getUsername(), infoPlayer.getGrade(), infoPlayer.getVille(), infoPlayer.getLv(), infoPlayer.getTravail(), money);
                 main.getInfoPlayer().put(player.getUniqueId(), infoPlayer1);
                 main.getUsernameToUUID().put(infoPlayer1.getUsername(), uuid);
 
-                InfoMarket infoMarket1 = new InfoMarket(item, infoMarket.getType(), price, infoMarket.getTaxe(), product, coin);
+                InfoMarket infoMarket1 = new InfoMarket(item, infoMarket.getType(), toPay, infoMarket.getTaxe(), product, coin);
                 main.getInfoMarket().put(item, infoMarket1);
 
                 final DbConnection db1Connection = main.getDbManager().getDb1Connection();
@@ -310,7 +314,7 @@ public class CommandMarket implements CommandExecutor {
                     final PreparedStatement preparedStatement2 = connection.prepareStatement("UPDATE market SET price = ?, product = ?, coin = ?, updated_at = ? WHERE material = ?");
                     final long time = System.currentTimeMillis();
 
-                    preparedStatement2.setFloat(1, price);
+                    preparedStatement2.setFloat(1, toPay);
                     preparedStatement2.setInt(2, product);
                     preparedStatement2.setFloat(3, coin);
                     preparedStatement2.setTimestamp(4, new Timestamp(time));
@@ -329,7 +333,8 @@ public class CommandMarket implements CommandExecutor {
 
                     player.getInventory().removeItem(new ItemStack(Objects.requireNonNull(Material.matchMaterial(item)), amount));
                     player.updateInventory();
-                    player.sendMessage(ChatColor.GREEN + "Vente effectué " + amount + " " + item + " vendu pour " + toPay + " coins");
+                    DecimalFormat df = new DecimalFormat("0.00");
+                    player.sendMessage(ChatColor.GREEN + "Vente effectué " + amount + " " + item + " vendu pour " + df.format(toPay) + " coins");
 
                 } catch (SQLException e) {
                     e.printStackTrace();

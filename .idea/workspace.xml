@@ -4,11 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="da6e7cba-aeda-4b89-b585-1665e8ec2a54" name="Changes" comment="market money duplication fix">
+    <list default="true" id="da6e7cba-aeda-4b89-b585-1665e8ec2a54" name="Changes" comment="market take the money of the player fix">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/elc/florian/commands/CommandMarket.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/elc/florian/commands/CommandMarket.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/elc/florian/commands/CommandMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/elc/florian/commands/CommandMenu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/elc/florian/listener/InvListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/elc/florian/listener/InvListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/elc/florian/commands/CommandMoney.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/elc/florian/commands/CommandMoney.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -314,7 +314,14 @@
       <option name="project" value="LOCAL" />
       <updated>1682169968828</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="market money duplication fix&#10;textured player head">
+      <created>1682257770944</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1682257770945</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -343,7 +350,8 @@
     <MESSAGE value="vente d'items&#10;a corrigé : item non donné si l'inv est plein" />
     <MESSAGE value="back ARROW&#10;roundGui _STAINED_GLASS_PANE&#10;perso info gui" />
     <MESSAGE value="gui leave and join city" />
-    <option name="LAST_COMMIT_MESSAGE" value="gui leave and join city" />
+    <MESSAGE value="market money duplication fix&#10;textured player head" />
+    <option name="LAST_COMMIT_MESSAGE" value="market money duplication fix&#10;textured player head" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
