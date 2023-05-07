@@ -25,7 +25,7 @@ public class MoveListener implements WebSocket.Listener, Listener {
             return;
         }
         Player player = event.getPlayer();
-        int distance = 16;
+        int distance = 8;
 
         int x = (int) player.getLocation().getX();
         int z = (int) player.getLocation().getZ();
@@ -60,14 +60,14 @@ public class MoveListener implements WebSocket.Listener, Listener {
                     if (event.getFrom().getBlockX() != event.getTo().getBlockX()) {
                         if (event.getFrom().getBlockX() < event.getTo().getBlockX()) {
 
-                            x = x - 10;
+                            x = x - distance;
                             if (x1 < x) {
                                 return;
                             } else {
                                 player.sendTitle("§6You join " + city, "§4Bienvenue dans la ville", 20, 20, 20);
                             }
                         } else {
-                            x = x + 10;
+                            x = x + distance;
                             if (x2 > x) {
                                 return;
                             } else {
@@ -76,18 +76,17 @@ public class MoveListener implements WebSocket.Listener, Listener {
                         }
 
                     } else {
-                        player.sendMessage(String.valueOf(z1) + z2);
                         if (event.getFrom().getBlockZ() < event.getTo().getBlockZ()) {
 
-                            z = z - 10;
-                            if (z1 < z) {
+                            z = z - distance;
+                            if (z1 <= z) {
                                 return;
                             } else {
                                 player.sendTitle("§6You join " + city, "§4Bienvenue dans la ville", 20, 20, 20);
                             }
                         } else {
-                            z = z + 10;
-                            if (z2 > z) {
+                            z = z + distance;
+                            if (z2 >= z) {
                                 return;
                             } else {
                                 player.sendTitle("§6You join " + city, "§4Bienvenue dans la ville", 20, 20, 20);

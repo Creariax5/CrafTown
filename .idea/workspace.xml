@@ -4,13 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="da6e7cba-aeda-4b89-b585-1665e8ec2a54" name="Changes" comment="market take the money of the player fix">
+    <list default="true" id="da6e7cba-aeda-4b89-b585-1665e8ec2a54" name="Changes" comment="message quand rentre dans ville">
+      <change afterPath="$PROJECT_DIR$/src/main/java/elc/florian/other/InfoMetier.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/elc/florian/other/InfoWorker.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/elc/florian/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/elc/florian/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/elc/florian/commands/CommandCity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/elc/florian/commands/CommandCity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/elc/florian/listener/InvListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/elc/florian/listener/InvListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/elc/florian/listener/moveListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/elc/florian/listener/MoveListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/elc/florian/other/InfoCity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/elc/florian/other/InfoCity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/elc/florian/listener/MoveListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/elc/florian/listener/MoveListener.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -129,6 +127,9 @@
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\devProjects\MC serv\plugins\CraftTown\server\plugins" />
       <recent name="D:\devProjects\MC serv\plugins\CraftTown\server" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="elc.florian.other" />
     </key>
   </component>
   <component name="RunManager" selected="Gradle.CraftTown [build]">
@@ -330,7 +331,14 @@
       <option name="project" value="LOCAL" />
       <updated>1683381459016</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="message quand rentre dans ville">
+      <created>1683403302684</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1683403302684</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -361,7 +369,8 @@
     <MESSAGE value="gui leave and join city" />
     <MESSAGE value="market money duplication fix&#10;textured player head" />
     <MESSAGE value="market take the money of the player fix" />
-    <option name="LAST_COMMIT_MESSAGE" value="market take the money of the player fix" />
+    <MESSAGE value="message quand rentre dans ville" />
+    <option name="LAST_COMMIT_MESSAGE" value="message quand rentre dans ville" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
