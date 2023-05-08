@@ -4,11 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="da6e7cba-aeda-4b89-b585-1665e8ec2a54" name="Changes" comment="message quand rentre dans ville">
-      <change afterPath="$PROJECT_DIR$/src/main/java/elc/florian/other/InfoMetier.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/elc/florian/other/InfoWorker.java" afterDir="false" />
+    <list default="true" id="da6e7cba-aeda-4b89-b585-1665e8ec2a54" name="Changes" comment="message quand rentre dans ville bug fix">
+      <change afterPath="$PROJECT_DIR$/src/main/java/elc/florian/commands/CommandCosmetic.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/elc/florian/listener/InvCosmetic.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/elc/florian/other/BuySell.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/elc/florian/listener/MoveListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/elc/florian/listener/MoveListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/elc/florian/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/elc/florian/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/elc/florian/commands/CommandCity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/elc/florian/commands/CommandCity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/elc/florian/commands/CommandMarket.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/elc/florian/commands/CommandMarket.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/elc/florian/commands/CommandSpawn.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/elc/florian/commands/CommandSpawn.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/elc/florian/listener/InvListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/elc/florian/listener/InvListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/elc/florian/listener/JoinListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/elc/florian/listener/JoinListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/plugin.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -338,7 +345,14 @@
       <option name="project" value="LOCAL" />
       <updated>1683403302684</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="message quand rentre dans ville bug fix">
+      <created>1683449568443</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1683449568443</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -370,7 +384,8 @@
     <MESSAGE value="market money duplication fix&#10;textured player head" />
     <MESSAGE value="market take the money of the player fix" />
     <MESSAGE value="message quand rentre dans ville" />
-    <option name="LAST_COMMIT_MESSAGE" value="message quand rentre dans ville" />
+    <MESSAGE value="message quand rentre dans ville bug fix" />
+    <option name="LAST_COMMIT_MESSAGE" value="message quand rentre dans ville bug fix" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

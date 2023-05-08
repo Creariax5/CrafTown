@@ -46,6 +46,7 @@ public class Main extends JavaPlugin {
         getCommand("menu").setExecutor(new CommandMenu());
         getCommand("market").setExecutor(new CommandMarket(INSTANCE));
         getCommand("bridge").setExecutor(new CommandAutoBridge());
+        getCommand("cosmetic").setExecutor(new CommandCosmetic());
         this.getServer().getPluginManager().registerEvents(new JoinListener(this), this);
         this.getServer().getPluginManager().registerEvents(new ChatListener(this), this);
         this.getServer().getPluginManager().registerEvents(new MoveListener(this), this);

@@ -6,6 +6,7 @@ import elc.florian.commands.CommandMenu;
 import elc.florian.other.InfoCity;
 import elc.florian.other.InfoMarket;
 import elc.florian.other.InfoPlayer;
+import elc.florian.other.BuySell;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -189,7 +190,7 @@ public class InvListener implements Listener {
         UUID uuid = player.getUniqueId();
         String name = player.getName();
 
-        InfoPlayer infoPlayer = CommandMarket.getInfoPlayerAuto(uuid);
+        InfoPlayer infoPlayer = BuySell.getInfoPlayerAuto(uuid);
 
         Inventory invPerso = Bukkit.createInventory(null, 27, "§4info perso");
 
@@ -242,25 +243,25 @@ public class InvListener implements Listener {
         if (event.getView().getTitle().startsWith("§5item")) {
             String item = event.getView().getTitle().substring(10);
             if (Objects.requireNonNull(current.getItemMeta()).getDisplayName().equals("§abuy x64")){
-                CommandMarket.buyItem(item, 64, player);
+                BuySell.buyItem(item, 64, player);
                 Inventory invItem = itemActionGui(item);
                 player.closeInventory();
                 player.openInventory(invItem);
 
             } else if (current.getItemMeta().getDisplayName().equals("§abuy x1")) {
-                CommandMarket.buyItem(item, 1, player);
+                BuySell.buyItem(item, 1, player);
                 Inventory invItem = itemActionGui(item);
                 player.closeInventory();
                 player.openInventory(invItem);
 
             } else if (current.getItemMeta().getDisplayName().equals("§csell x64")) {
-                CommandMarket.sellItem(item, 64, player);
+                BuySell.sellItem(item, 64, player);
                 Inventory invItem = itemActionGui(item);
                 player.closeInventory();
                 player.openInventory(invItem);
 
             } else if (current.getItemMeta().getDisplayName().equals("§csell x1")) {
-                CommandMarket.sellItem(item, 1, player);
+                BuySell.sellItem(item, 1, player);
                 Inventory invItem = itemActionGui(item);
                 player.closeInventory();
                 player.openInventory(invItem);
@@ -356,6 +357,11 @@ public class InvListener implements Listener {
                 player.closeInventory();
                 listCityGui(player);
 
+            } else if (current.getType() == Material.ENDER_PEARL) {
+                String city = replaceAll(Objects.requireNonNull(current.getItemMeta()).getDisplayName(), "§dTp a ", "");
+
+                CommandCity.spawnCity(city, player);
+
             } else {
 
                 try {
@@ -383,6 +389,7 @@ public class InvListener implements Listener {
                         invHabs.setItem(49, CommandMenu.getItem(Material.ARROW, "retourner a info de " + city));
 
                         player.openInventory(invHabs);
+
                     } else {
                         event.setCancelled(true);
                         return;
@@ -407,7 +414,7 @@ public class InvListener implements Listener {
             } catch (Exception e) {
                 player.closeInventory();
 
-                UUID uuid = CommandMarket.getUUIDwithUsername(Objects.requireNonNull(current.getItemMeta()).getDisplayName());
+                UUID uuid = BuySell.getUUIDwithUsername(Objects.requireNonNull(current.getItemMeta()).getDisplayName());
 
                 player.openInventory(invPerso(player));
             }
@@ -425,7 +432,7 @@ public class InvListener implements Listener {
             maire = "Pas de maire";
         }
 
-
+        invCity.setItem(4, getItem(Material.ENDER_PEARL, "§dTp a " + city));
         invCity.setItem(11, getPlayerHead("Nombre d'habitants: " + infoCity.getHabs_nb(), "cake"));
         invCity.setItem(12, getPlayerHead("Liste des habitants de " + city, "cake"));
         invCity.setItem(14, getPlayerHead("Maire: " + maire, "king"));

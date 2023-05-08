@@ -32,6 +32,10 @@ commands:
     description: Set des blocks en dessous du joueur.
     aliases:
       - auto-bridge
+  cosmetic:
+    description: Ouvre cosmetic menu.
+    aliases:
+      - cos
 data-base:
   host: eu02-sql.pebblehost.com
   user: customer_456749_craftown

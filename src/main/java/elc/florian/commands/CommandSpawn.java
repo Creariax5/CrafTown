@@ -14,10 +14,10 @@ public class CommandSpawn implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NonNull CommandSender sender, @NonNull Command command, @NonNull String label, String[] args) {
+        Player player = (Player) sender;
         if (args.length == 0) {
             sender.sendMessage(ChatColor.LIGHT_PURPLE + "Debut de la teleportation ...");
 
-            Player player = (Player) sender;
             World world = Bukkit.getWorld("world");
             final Location location = new Location(world, 0, 0, 0, 0, 0);
             player.teleport(location);

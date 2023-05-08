@@ -4,6 +4,7 @@ import elc.florian.Main;
 import elc.florian.db.DbConnection;
 import elc.florian.other.InfoCity;
 import elc.florian.other.InfoPlayer;
+import elc.florian.other.BuySell;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -220,7 +221,7 @@ public class CommandCity implements CommandExecutor {
                     try {
                         UUID uuid = player.getUniqueId();
 
-                        InfoPlayer infoPlayer1 = CommandMarket.getInfoPlayerAuto(uuid);
+                        InfoPlayer infoPlayer1 = BuySell.getInfoPlayerAuto(uuid);
                         infoPlayer1.setVille(city);
                         main.getInfoPlayer().put(uuid, infoPlayer1);
 
@@ -283,7 +284,7 @@ public class CommandCity implements CommandExecutor {
             if (city != null) {
                 UUID uuid = player.getUniqueId();
 
-                InfoPlayer infoPlayer1 = CommandMarket.getInfoPlayerAuto(uuid);
+                InfoPlayer infoPlayer1 = BuySell.getInfoPlayerAuto(uuid);
                 infoPlayer1.setVille("rural");
                 main.getInfoPlayer().put(uuid, infoPlayer1);
 
@@ -406,6 +407,7 @@ public class CommandCity implements CommandExecutor {
             final Location location = new Location(world, spawn_x, spawn_y, spawn_z, spawn_yaw, spawn_pitch);
             player.teleport(location);
             sender.sendMessage(ChatColor.LIGHT_PURPLE + "... le voyage est terminé");
+            player.sendTitle("§6You join " + cityName, "§4Bienvenue dans la ville", 20, 20, 20);
         }
     }
 

@@ -3,6 +3,10 @@ package elc.florian.listener;
 import elc.florian.Main;
 import elc.florian.db.DbConnection;
 import elc.florian.other.InfoPlayer;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -39,6 +43,12 @@ public class JoinListener implements WebSocket.Listener, Listener {
             }
 
             Bukkit.broadcastMessage(ChatColor.AQUA + "[" + ChatColor.LIGHT_PURPLE + info_player.getGrade() + ChatColor.AQUA + "] " + player.getName() + ChatColor.GOLD + " s'est réveillé");
+
+            TextComponent message = new TextComponent(ChatColor.YELLOW + "Clickable /menu");
+            message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(ChatColor.YELLOW + "Execute /menu")));
+            message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/menu"));
+            player.spigot().sendMessage(message);
+
             main.getInfoPlayer().put(uuid, info_player);
             main.getUsernameToUUID().put(info_player.getUsername(), uuid);
         } catch (SQLException e) {
