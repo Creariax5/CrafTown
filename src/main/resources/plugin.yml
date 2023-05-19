@@ -36,6 +36,12 @@ commands:
     description: Ouvre cosmetic menu.
     aliases:
       - cos
+  terrain:
+    description: Savoir a qui appartient le terrain sur le quel on se situe.
+    aliases:
+      - ter
+  claim:
+    description: claim current chunk.
 data-base:
   host: eu02-sql.pebblehost.com
   user: customer_456749_craftown

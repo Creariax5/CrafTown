@@ -1,6 +1,7 @@
 package elc.florian.listener;
 
 import elc.florian.commands.CommandCity;
+import elc.florian.commands.CommandClaim;
 import elc.florian.commands.CommandMarket;
 import elc.florian.commands.CommandMenu;
 import elc.florian.other.InfoCity;
@@ -33,6 +34,7 @@ public class InvListener implements Listener {
         cityGui(event);
         marcketGui(event);
         playerGui(event);
+        CommandClaim.claimInv(event);
     }
 
     private void playerGui(InventoryClickEvent event) {

@@ -16,10 +16,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.lang.reflect.Field;
 import java.text.DecimalFormat;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 public class CommandMenu implements CommandExecutor {
     @Override
@@ -46,6 +43,16 @@ public class CommandMenu implements CommandExecutor {
         ItemMeta itemStackM = itemStack.getItemMeta();
         assert itemStackM != null;
         itemStackM.setDisplayName(displayName);
+        itemStack.setItemMeta(itemStackM);
+        return itemStack;
+    }
+
+    public static ItemStack getItemWithLore(Material material, String displayName, String lore) {
+        ItemStack itemStack = new ItemStack(material);
+        ItemMeta itemStackM = itemStack.getItemMeta();
+        assert itemStackM != null;
+        itemStackM.setDisplayName(displayName);
+        itemStackM.setLore(Collections.singletonList(lore));
         itemStack.setItemMeta(itemStackM);
         return itemStack;
     }

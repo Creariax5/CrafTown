@@ -47,6 +47,8 @@ public class Main extends JavaPlugin {
         getCommand("market").setExecutor(new CommandMarket(INSTANCE));
         getCommand("bridge").setExecutor(new CommandAutoBridge());
         getCommand("cosmetic").setExecutor(new CommandCosmetic());
+        getCommand("terrain").setExecutor(new CommandTerrain(INSTANCE));
+        getCommand("claim").setExecutor(new CommandClaim(INSTANCE));
         this.getServer().getPluginManager().registerEvents(new JoinListener(this), this);
         this.getServer().getPluginManager().registerEvents(new ChatListener(this), this);
         this.getServer().getPluginManager().registerEvents(new MoveListener(this), this);
@@ -85,5 +87,8 @@ public class Main extends JavaPlugin {
 
     public void setCityList(List<String> cityList) {
         this.cityList = cityList;
+    }
+    public static Main getINSTANCE() {
+        return INSTANCE;
     }
 }

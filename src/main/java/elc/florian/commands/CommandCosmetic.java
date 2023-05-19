@@ -24,7 +24,10 @@ public class CommandCosmetic implements CommandExecutor {
         Inventory inv = Bukkit.createInventory(null, 54, "§5cosmetic");
 
         inv.setItem(0, ItemStackCustomData(Material.GOLDEN_SWORD, "cheated", 1));
-        inv.setItem(1, ItemStackCustomData(Material.ELYTRA, "demon", 1));
+        inv.setItem(1, ItemStackCustomData(Material.GOLDEN_SWORD, "mega sword", 2));
+        inv.setItem(2, ItemStackCustomData(Material.ELYTRA, "demon", 1));
+        inv.setItem(3, ItemStackCustomData(Material.APPLE, "hotdog", 1));
+        inv.setItem(4, ItemStackCustomData(Material.CARVED_PUMPKIN, "hat", 1));
 
         return inv;
     }

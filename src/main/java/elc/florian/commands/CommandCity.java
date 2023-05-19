@@ -179,16 +179,16 @@ public class CommandCity implements CommandExecutor {
                     preparedStatement.setFloat(12, 100);
 
                     // territory_pos1x
-                    preparedStatement.setInt(13, (int) (location.getX() + 50));
+                    preparedStatement.setInt(13, CommandTerrain.getChunkPoint(location.getX() + 5));
 
-                    // territory_pos1y
-                    preparedStatement.setInt(14, (int) (location.getY() + 50));
+                    // territory_pos1z
+                    preparedStatement.setInt(14, CommandTerrain.getChunkPoint(location.getZ() + 5));
 
                     // territory_pos2x
-                    preparedStatement.setInt(15, (int) (location.getX() - 50));
+                    preparedStatement.setInt(15, CommandTerrain.getChunkPoint(location.getX() - 5));
 
-                    // territory_pos2y
-                    preparedStatement.setInt(16, (int) (location.getY() - 50));
+                    // territory_pos2z
+                    preparedStatement.setInt(16, CommandTerrain.getChunkPoint(location.getZ() - 5));
 
                     // created_at
                     preparedStatement.setTimestamp(17, new Timestamp(time));
