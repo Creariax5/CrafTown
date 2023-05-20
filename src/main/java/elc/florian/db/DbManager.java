@@ -1,7 +1,8 @@
 package elc.florian.db;
 
-import elc.florian.Main;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
@@ -12,11 +13,17 @@ public class DbManager {
     Plugin plugin = Bukkit.getPluginManager().getPlugin("CraftTown");
 
     public DbManager() {
-        String host = "eu02-sql.pebblehost.com";
-        String user = "customer_456749_craftown";
-        String password = "84@6hvS~tbK$t4JVgMeO";
-        String name = "customer_456749_craftown";
-        int port = 3306;
+        final File file = new File("plugins/CrafTown/dataBase.yml");
+        final YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+        String key = "DbManager.";
+        final ConfigurationSection configurationSection = config.getConfigurationSection(key);
+
+        assert configurationSection != null;
+        String host = configurationSection.getString("host");
+        String user = configurationSection.getString("user");
+        String password = configurationSection.getString("password");
+        String name = configurationSection.getString("name");
+        int port = configurationSection.getInt("port");
 
         this.db1Connection = new DbConnection(new DbCred(host, user, password, name, port));
     }

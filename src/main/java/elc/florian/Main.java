@@ -6,6 +6,7 @@ import elc.florian.listener.ChatListener;
 import elc.florian.listener.InvListener;
 import elc.florian.listener.JoinListener;
 import elc.florian.listener.MoveListener;
+import elc.florian.other.CreateYML;
 import elc.florian.other.InfoCity;
 import elc.florian.other.InfoMarket;
 import elc.florian.other.InfoPlayer;
@@ -26,6 +27,11 @@ public class Main extends JavaPlugin {
     private HashMap<String, InfoMarket> infoMarket;
     private HashMap<String, List<String>> infoMarketByType;
     private List<String> cityList;
+
+    @Override
+    public void onLoad() {
+        CreateYML.setFields();
+    }
 
     @Override
     public void onEnable() {

@@ -4,12 +4,14 @@ import elc.florian.commands.CommandCity;
 import elc.florian.commands.CommandClaim;
 import elc.florian.commands.CommandMarket;
 import elc.florian.commands.CommandMenu;
+import elc.florian.other.BuySell;
 import elc.florian.other.InfoCity;
 import elc.florian.other.InfoMarket;
 import elc.florian.other.InfoPlayer;
-import elc.florian.other.BuySell;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -17,6 +19,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import java.io.File;
 import java.util.*;
 
 import static elc.florian.commands.CommandMenu.*;
@@ -196,14 +199,25 @@ public class InvListener implements Listener {
 
         Inventory invPerso = Bukkit.createInventory(null, 27, "§4info perso");
 
+        final File file = new File("plugins/CrafTown/heads.yml");
+        final YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+        String key = "invPerso.";
+        final ConfigurationSection configurationSection = config.getConfigurationSection(key);
 
-        invPerso.setItem(10, getPlayerHead("Grade: " + infoPlayer.getGrade(), "cake"));
-        invPerso.setItem(11, getPlayerHead("Ville: " + infoPlayer.getVille(), "cake"));
-        invPerso.setItem(4, getPlayerHead("Niveau: " + infoPlayer.getLv(), "cake"));
+        assert configurationSection != null;
+        String levelURL = configurationSection.getString("levelURL");
+        String gradeURL = configurationSection.getString("gradeURL");
+        String cityURL = configurationSection.getString("cityURL");
+        String workURL = configurationSection.getString("workURL");
+        String moneyURL = configurationSection.getString("moneyURL");
+
+        invPerso.setItem(10, getSkull(gradeURL, "Grade: " + infoPlayer.getGrade()));
+        invPerso.setItem(11, getSkull(cityURL, "Ville: " + infoPlayer.getVille()));
+        invPerso.setItem(4, getSkull(levelURL, "Niveau: " + infoPlayer.getLv()));
         invPerso.setItem(13, getPlayerHead(name, name));
         invPerso.setItem(22, CommandMenu.getItem(Material.ARROW, "back to menu"));
-        invPerso.setItem(15, getPlayerHead("Travail: " + infoPlayer.getTravail(), "cake"));
-        invPerso.setItem(16, getPlayerHead("Money: " + infoPlayer.getMoney(), "cake"));
+        invPerso.setItem(15, getSkull(workURL, "Travail: " + infoPlayer.getTravail()));
+        invPerso.setItem(16, getSkull(moneyURL, "Money: " + infoPlayer.getMoney()));
         return invPerso;
     }
 

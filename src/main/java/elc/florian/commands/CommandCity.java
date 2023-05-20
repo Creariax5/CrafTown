@@ -68,12 +68,31 @@ public class CommandCity implements CommandExecutor {
                     } else if (Objects.equals(args[0], "setspawn")) {
                         setSpawnCity(args[1], sender);
 
+                    } else if (Objects.equals(args[0], "visualise")) {
+                        visualiseCity(args[1], sender);
+
                     } else {
                         sender.sendMessage(ChatColor.RED + "No arguments matches with " + args[0]);
                     }
             }
         });
         return false;
+    }
+
+    private void visualiseCity(String city, CommandSender sender) {
+        InfoCity infoCity = getInfoCityAuto(city);
+
+        if (isInCity(city, sender)) {
+            sender.sendMessage(ChatColor.BLUE + "Info de " + city + ":");
+            sender.sendMessage(ChatColor.GOLD + "----------------------");
+            sender.sendMessage(ChatColor.GOLD + "nombre d'habitants: " + infoCity.getHabs_nb());
+            sender.sendMessage(ChatColor.GOLD + "Habitants: " + infoCity.getHabs());
+            sender.sendMessage(ChatColor.GOLD + "Niveau: " + infoCity.getLv());
+            sender.sendMessage(ChatColor.GOLD + "Maire: " + infoCity.getMaire());
+            sender.sendMessage(ChatColor.GOLD + "----------------------");
+        } else {
+            sender.sendMessage(ChatColor.RED + "No city named " + city);
+        }
     }
 
 
